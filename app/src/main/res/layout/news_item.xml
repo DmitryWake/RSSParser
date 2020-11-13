@@ -17,22 +17,24 @@
 
     <TextView
         android:id="@+id/news_title"
-        android:layout_width="250dp"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/app_margin"
+        android:maxLines="2"
         android:textColor="@color/black"
         android:text="Заголовок"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@id/news_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/news_description"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_margin="@dimen/app_margin"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/app_margin"
+        android:maxLines="4"
         android:text="Описание"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/news_image"
         app:layout_constraintTop_toBottomOf="@id/news_title" />
 

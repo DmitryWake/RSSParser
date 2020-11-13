@@ -1,8 +1,9 @@
 package com.example.rssparser.models
 
-data class NewsModel (
-    val title: String,
-    val ling: String,
-    val description: String,
-    val imageUrl: String = "empty"
+data class NewsModel(
+    var title: String = "",
+    var description: String = "",
+    var link: String = "empty",
+    var guid: String = "empty",
+    var imageUrl: String = "empty"
 )

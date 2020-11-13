@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rssparser.R
 import com.example.rssparser.models.NewsModel
 import kotlinx.android.synthetic.main.news_item.view.*
 
