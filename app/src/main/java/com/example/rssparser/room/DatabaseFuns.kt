@@ -1,11 +1,9 @@
 package com.example.rssparser.room
 
-import android.os.Looper
 import android.util.Log
 import androidx.room.Room
 import com.example.rssparser.room.dao.NewsDao
 import com.example.rssparser.room.models.NewsModel
-import com.example.rssparser.screens.main_screen.MainFragment
 import com.example.rssparser.utilities.APP_ACTIVITY
 import java.io.IOException
 
@@ -37,5 +35,4 @@ fun loadFromDatabase(function: (List<NewsModel>) -> Unit) {
     } catch (e: IOException) {
         Log.e(TAG, "Loading error: ${e.message.toString()}")
     }
-
 }
