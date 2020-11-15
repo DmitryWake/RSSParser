@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.rssparser.R
 import com.example.rssparser.models.NewsModel
+import com.example.rssparser.utilities.downloadAndSetImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 
@@ -23,6 +24,7 @@ class DetailFragment(private val newsModel: NewsModel) : Fragment(R.layout.fragm
     private fun drawNews() {
         mTitle.text = newsModel.title
         mDescription.text = newsModel.description
+        mImageView.downloadAndSetImage(newsModel.imageUrl)
     }
 
     private fun initFields() {
