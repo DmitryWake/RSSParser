@@ -16,10 +16,8 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         APP_ACTIVITY = this
-    }
-
-    override fun onStart() {
-        super.onStart()
-        replaceFragment(MainFragment(), false)
+        if (savedInstanceState == null || savedInstanceState.isEmpty) {
+            replaceFragment(MainFragment(), false)
+        }
     }
 }
