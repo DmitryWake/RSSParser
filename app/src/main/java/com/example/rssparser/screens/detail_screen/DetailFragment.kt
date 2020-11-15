@@ -1,11 +1,15 @@
 package com.example.rssparser.screens.detail_screen
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.rssparser.R
 import com.example.rssparser.room.models.NewsModel
+import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.utilities.downloadAndSetImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 
@@ -19,6 +23,7 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
     private lateinit var mTitle: TextView
     private lateinit var mImageView: ImageView
     private lateinit var mDescription: TextView
+    private lateinit var mBrowserButton: Button
 
     constructor(): this(NewsModel())
 
@@ -32,7 +37,15 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
     override fun onStart() {
         super.onStart()
         initFields()
+        initFunctions()
         drawNews()
+    }
+
+    private fun initFunctions() {
+        mBrowserButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(newsModel.link))
+            startActivity(intent, null)
+        }
     }
 
     private fun drawNews() {
@@ -45,6 +58,7 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
         mTitle = detail_title
         mImageView = detail_image
         mDescription = detail_description
+        mBrowserButton = button_read_next
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
