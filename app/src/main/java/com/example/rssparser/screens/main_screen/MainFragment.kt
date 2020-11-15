@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
+import com.example.rssparser.room.loadFromDatabase
 import com.example.rssparser.room.models.NewsModel
+import com.example.rssparser.room.newsDao
+import com.example.rssparser.room.saveToDatabase
 import com.example.rssparser.rss.RSSParser
 import com.example.rssparser.utilities.APP_ACTIVITY
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -26,7 +29,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (dataList.isEmpty())
-            loadFromDatabase()
+            loadFromDatabase {
+                android.os.Handler(Looper.getMainLooper()).post {
+                    kotlin.run {
+                        dataList = it
+                        mAdapter.changeData(dataList)
+                    }
+                }
+            }
     }
 
     override fun onStart() {
@@ -37,27 +47,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onStop() {
         super.onStop()
-        saveToDatabase()
-    }
-
-    private fun saveToDatabase() {
-        val task = Runnable {
-            MainActivity.newsDao.insert(dataList)
-        }
-        Thread(task).start()
-    }
-
-    private fun loadFromDatabase() {
-        val task = Runnable {
-            dataList = MainActivity.newsDao.getAll()
-            println()
-            android.os.Handler(Looper.getMainLooper()).post {
-                kotlin.run {
-                    mAdapter.changeData(dataList)
-                }
-            }
-        }
-        Thread(task).start()
+        saveToDatabase(dataList)
     }
 
 
@@ -67,7 +57,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         val task = Runnable {
             val tmpList = parser.readFeed()
             if (parser.isSuccessful) {
-                MainActivity.newsDao.delete(dataList)
+                newsDao.delete(dataList)
                 dataList = tmpList
                 android.os.Handler(Looper.getMainLooper()).post {
                     kotlin.run {
