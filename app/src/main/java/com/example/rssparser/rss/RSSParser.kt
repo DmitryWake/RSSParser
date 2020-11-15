@@ -1,7 +1,7 @@
 package com.example.rssparser.rss
 
 import android.util.Log
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.room.models.NewsModel
 import com.example.rssparser.utilities.formatDescription
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
@@ -23,6 +23,8 @@ class RSSParser(private val url: URL) {
         const val GUID = "guid"
         const val ENCLOSURE = "enclosure"
     }
+
+    var isSuccessful: Boolean = true
 
     fun readFeed(): List<NewsModel> {
 
@@ -80,9 +82,9 @@ class RSSParser(private val url: URL) {
                 parser.next()
             }
         } catch (t: Throwable) {
+            isSuccessful = false
             Log.e(TAG, "Loading error: ${t.message.toString()}")
         }
-
         return results
     }
 

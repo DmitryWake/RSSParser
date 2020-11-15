@@ -2,12 +2,20 @@ package com.example.rssparser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.room.Room
 import com.example.rssparser.databinding.ActivityMainBinding
+import com.example.rssparser.room.AppDatabase
+import com.example.rssparser.room.dao.NewsDao
 import com.example.rssparser.screens.main_screen.MainFragment
 import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.utilities.replaceFragment
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        lateinit var dataBase: AppDatabase
+        lateinit var newsDao: NewsDao
+    }
 
     private lateinit var mBinding: ActivityMainBinding
 
@@ -19,5 +27,12 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null || savedInstanceState.isEmpty) {
             replaceFragment(MainFragment(), false)
         }
+        initDatabase()
     }
+
+    private fun initDatabase() {
+        dataBase = Room.databaseBuilder(APP_ACTIVITY, AppDatabase::class.java, "database").build()
+        newsDao = dataBase.newsDao()
+    }
+
 }

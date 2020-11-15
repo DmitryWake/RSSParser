@@ -5,8 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.rssparser.R
-import com.example.rssparser.models.NewsModel
-import com.example.rssparser.utilities.FRAGMENT_KEY
+import com.example.rssparser.room.models.NewsModel
 import com.example.rssparser.utilities.downloadAndSetImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 

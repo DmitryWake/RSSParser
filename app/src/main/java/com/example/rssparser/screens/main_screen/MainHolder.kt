@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.room.models.NewsModel
 import com.example.rssparser.screens.detail_screen.DetailFragment
 import com.example.rssparser.utilities.downloadAndSetImage
 import com.example.rssparser.utilities.replaceFragment
