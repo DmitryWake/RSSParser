@@ -1,16 +1,19 @@
 package com.example.rssparser.screens.main_screen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.R
-import com.example.rssparser.room.loadFromDatabase
+import com.example.rssparser.room.AppDatabaseHelper
 import com.example.rssparser.room.models.NewsModel
-import com.example.rssparser.room.newsDao
-import com.example.rssparser.room.saveToDatabase
 import com.example.rssparser.rss.RSSParser
+import com.example.rssparser.utilities.APP_DATABASE_HELPER
+import com.example.rssparser.utilities.URL_LENTA_RU
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers.io
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.net.URL
 
@@ -19,7 +22,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
         var mRecyclerViewPosition: Int = 0
-
         private var dataList: List<NewsModel> = mutableListOf()
     }
 
@@ -30,15 +32,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (dataList.isEmpty()) {
-            loadFromDatabase {
-                android.os.Handler(Looper.getMainLooper()).post {
-                    kotlin.run {
-                        dataList = it
-                        mAdapter.changeData(dataList)
-                    }
-                    downloadData()
-                }
-            }
+            loadAndDrawFeed()
+            downloadAndDrawFeed()
         }
 
     }
@@ -52,31 +47,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onStop() {
         super.onStop()
-        saveToDatabase(dataList)
+        saveFeed()
     }
 
     override fun onPause() {
         super.onPause()
         mRecyclerViewPosition = mLayoutManager.findFirstVisibleItemPosition()
-    }
-
-
-    private fun downloadData() {
-        val parser = RSSParser(URL("https://lenta.ru/rss/news"))
-
-        val task = Runnable {
-            val tmpList = parser.readFeed()
-            if (parser.isSuccessful) {
-                newsDao.delete(dataList)
-                dataList = tmpList
-                android.os.Handler(Looper.getMainLooper()).post {
-                    kotlin.run {
-                        mAdapter.changeData(dataList)
-                    }
-                }
-            }
-        }
-        Thread(task).start()
     }
 
     private fun initRecyclerView() {
@@ -87,5 +63,58 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         mRecyclerView.isNestedScrollingEnabled = false
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = mLayoutManager
+    }
+
+    private fun createDownloadObservable(): Observable<RSSParser> = Observable.create { emitter ->
+        emitter.onNext(RSSParser(URL(URL_LENTA_RU)))
+    }
+
+    private fun createLoadObservable(): Observable<AppDatabaseHelper> =
+        Observable.create { emitter ->
+            emitter.onNext(APP_DATABASE_HELPER)
+        }
+
+    private fun createSaveObservable(): Observable<List<NewsModel>> =
+        Observable.create { emitter ->
+            emitter.onNext(dataList)
+        }
+
+    @SuppressLint("CheckResult")
+    private fun saveFeed() {
+        val saveObservable = createSaveObservable()
+        saveObservable.observeOn(io()).subscribe {
+            APP_DATABASE_HELPER.saveToDatabase(it)
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun loadAndDrawFeed() {
+        val loadObservable = createLoadObservable()
+        loadObservable
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(io())
+            .map { it.loadFromDatabase() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (it.isNotEmpty()) {
+                    dataList = it
+                    mAdapter.changeData(it)
+                }
+            }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun downloadAndDrawFeed() {
+
+        val downloadObservable = createDownloadObservable()
+        downloadObservable
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(io())
+            .map { it.readFeed() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                dataList = result
+                mAdapter.changeData(dataList)
+            }
     }
 }

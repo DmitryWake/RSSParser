@@ -2,13 +2,11 @@ package com.example.rssparser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.room.Room
 import com.example.rssparser.databinding.ActivityMainBinding
-import com.example.rssparser.room.AppDatabase
-import com.example.rssparser.room.dao.NewsDao
-import com.example.rssparser.room.initDatabase
+import com.example.rssparser.room.AppDatabaseHelper
 import com.example.rssparser.screens.main_screen.MainFragment
 import com.example.rssparser.utilities.APP_ACTIVITY
+import com.example.rssparser.utilities.APP_DATABASE_HELPER
 import com.example.rssparser.utilities.replaceFragment
 
 class MainActivity : AppCompatActivity() {
@@ -19,11 +17,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        APP_ACTIVITY = this
+        initFields()
         if (savedInstanceState == null || savedInstanceState.isEmpty) {
             replaceFragment(MainFragment(), false)
         }
-        initDatabase()
+    }
+
+    private fun initFields() {
+        APP_ACTIVITY = this
+        APP_DATABASE_HELPER = AppDatabaseHelper()
+        APP_DATABASE_HELPER.initDatabase()
     }
 
 }
