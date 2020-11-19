@@ -1,7 +1,7 @@
 package com.example.rssparser.rss
 
 import android.util.Log
-import com.example.rssparser.room.models.NewsModel
+import com.example.rssparser.models.NewsModel
 import com.example.rssparser.utilities.formatDescription
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
@@ -14,7 +14,6 @@ class RSSParser(private val url: URL) {
 
     companion object {
         const val TAG = "RSSParser"
-
         const val TITLE = "title"
         const val DESCRIPTION = "description"
         const val URL = "url"
@@ -71,7 +70,7 @@ class RSSParser(private val url: URL) {
                             ENCLOSURE -> {
                                 for (i in 0 until parser.attributeCount) {
                                     if (parser.getAttributeName(i) == URL)
-                                        newsModel.imageUrl = parser.getAttributeValue(i)
+                                        newsModel.enclosure.url = parser.getAttributeValue(i)
                                 }
                             }
                         }

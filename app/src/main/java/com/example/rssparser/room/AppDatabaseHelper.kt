@@ -3,7 +3,7 @@ package com.example.rssparser.room
 import android.util.Log
 import androidx.room.Room
 import com.example.rssparser.room.dao.NewsDao
-import com.example.rssparser.room.models.NewsModel
+import com.example.rssparser.models.NewsModel
 import com.example.rssparser.utilities.APP_ACTIVITY
 import java.io.IOException
 
@@ -32,8 +32,8 @@ class AppDatabaseHelper {
     fun loadFromDatabase(): List<NewsModel> {
         return try {
             newsDao.getAll()
-        } catch (e: IOException) {
-            Log.e(TAG, "Loading error: ${e.message.toString()}")
+        } catch (t: Throwable) {
+            Log.e(TAG, "Loading error: ${t.message.toString()}")
             listOf()
         }
     }

@@ -2,25 +2,34 @@ package com.example.rssparser.screens.main_screen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.R
+import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.room.AppDatabaseHelper
-import com.example.rssparser.room.models.NewsModel
+import com.example.rssparser.models.NewsModel
+import com.example.rssparser.rss.NetworkService
 import com.example.rssparser.rss.RSSParser
+import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.utilities.APP_DATABASE_HELPER
 import com.example.rssparser.utilities.URL_LENTA_RU
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers.io
 import kotlinx.android.synthetic.main.fragment_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URL
 
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
+        const val TAG = "MainFragment"
         var mRecyclerViewPosition: Int = 0
         private var dataList: List<NewsModel> = mutableListOf()
     }
@@ -65,10 +74,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         mRecyclerView.layoutManager = mLayoutManager
     }
 
-    private fun createDownloadObservable(): Observable<RSSParser> = Observable.create { emitter ->
-        emitter.onNext(RSSParser(URL(URL_LENTA_RU)))
-    }
-
     private fun createLoadObservable(): Observable<AppDatabaseHelper> =
         Observable.create { emitter ->
             emitter.onNext(APP_DATABASE_HELPER)
@@ -97,6 +102,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (it.isNotEmpty()) {
+                    Thread {
+                        APP_DATABASE_HELPER.deleteFromDatabase(dataList)
+                    }.start()
                     dataList = it
                     mAdapter.changeData(it)
                 }
@@ -105,16 +113,25 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     @SuppressLint("CheckResult")
     private fun downloadAndDrawFeed() {
+        NetworkService
+            .mInstance
+            .getRSSApi()
+            .getNews()
+            .enqueue(object : Callback<ArticleResponse> {
+                override fun onResponse(
+                    call: Call<ArticleResponse>,
+                    response: Response<ArticleResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val article = response.body()
+                        dataList = article?.channel?.newsList!!
+                        mAdapter.changeData(dataList)
+                    }
+                }
 
-        val downloadObservable = createDownloadObservable()
-        downloadObservable
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(io())
-            .map { it.readFeed() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result ->
-                dataList = result
-                mAdapter.changeData(dataList)
-            }
+                override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
+                    Log.e(TAG, t.message.toString(), t)
+                }
+            })
     }
 }
