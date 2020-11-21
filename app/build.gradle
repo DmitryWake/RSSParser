@@ -29,6 +29,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    dataBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -54,7 +57,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Room
-    def room_version = "2.2.3" // check latest version from docs
+    def room_version = "2.2.5" // check latest version from docs
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
@@ -65,7 +68,7 @@ dependencies {
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     // XML converter
-    compile ('com.squareup.retrofit2:converter-simplexml:2.5.0', {
+    implementation ('com.squareup.retrofit2:converter-simplexml:2.5.0', {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'

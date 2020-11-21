@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.rssparser.databinding.ActivityMainBinding
 import com.example.rssparser.room.AppDatabaseHelper
-import com.example.rssparser.screens.main_screen.MainFragment
+import com.example.rssparser.views.main_screen.MainFragment
 import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.utilities.APP_DATABASE_HELPER
 import com.example.rssparser.utilities.replaceFragment

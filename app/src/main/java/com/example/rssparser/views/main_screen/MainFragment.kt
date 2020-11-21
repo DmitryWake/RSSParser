@@ -1,9 +1,8 @@
-package com.example.rssparser.screens.main_screen
+package com.example.rssparser.views.main_screen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +11,7 @@ import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.room.AppDatabaseHelper
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.rss.NetworkService
-import com.example.rssparser.rss.RSSParser
-import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.utilities.APP_DATABASE_HELPER
-import com.example.rssparser.utilities.URL_LENTA_RU
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers.io
@@ -23,7 +19,6 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.net.URL
 
 
 class MainFragment : Fragment(R.layout.fragment_main) {

@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.example.rssparser.room.dao.NewsDao
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.utilities.APP_ACTIVITY
-import java.io.IOException
 
 class AppDatabaseHelper {
     companion object {
