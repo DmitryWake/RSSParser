@@ -16,11 +16,6 @@ fun replaceFragment(fragment: Fragment, addToBackStack: Boolean) {
     }
 }
 
-fun ImageView.downloadAndSetImage(url: String) {
-    Picasso.get().load(url).fit()
-        .placeholder(R.drawable.ic_base_image).into(this)
-}
-
 @BindingAdapter("app:url")
 fun loadImage(view: ImageView, url: String) {
     Picasso.get().load(url).fit().placeholder(R.drawable.ic_base_image).into(view)
