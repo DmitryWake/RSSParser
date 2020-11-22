@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.NewsRepository
-import com.example.rssparser.rss.NetworkService
 import com.example.rssparser.utilities.APP
 import com.example.rssparser.utilities.formatDescription
 import com.example.rssparser.views.main_screen.MainAdapter
@@ -55,7 +54,7 @@ class MainViewModel : ViewModel() {
             .map { it.loadFromDatabase() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                dataList = it.sortedBy {newsModel ->
+                dataList = it.sortedBy { newsModel ->
                     newsModel.pubDate
                 }.reversed()
                 formatData(dataList)
@@ -64,8 +63,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun downloadFeed() {
-        NetworkService
-            .mInstance
+        APP.networkComponent().getNetworkService()
             .getRSSApi()
             .getNews()
             .enqueue(object : Callback<ArticleResponse> {

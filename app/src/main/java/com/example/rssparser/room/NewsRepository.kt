@@ -14,8 +14,8 @@ class NewsRepository {
     private lateinit var newsDao: NewsDao
 
     fun initDatabase() {
-        dataBase = APP.getAppComponent().getDatabase()
-        newsDao = APP.getAppComponent().getNewsDao()
+        dataBase = APP.appComponent().getDatabase()
+        newsDao = APP.appComponent().getNewsDao()
     }
 
     fun deleteFromDatabase(dataList: List<NewsModel>) {

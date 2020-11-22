@@ -10,6 +10,7 @@ import java.io.InputStream
 import java.lang.RuntimeException
 import java.net.URL
 
+// @deprecated we recommend switching to the RSSFeedApi.
 class RSSParser(private val url: URL) {
 
     companion object {
