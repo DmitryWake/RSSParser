@@ -54,8 +54,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         mRecyclerView.scrollToPosition(mRecyclerViewPosition)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         mViewModel.saveData()
     }
 

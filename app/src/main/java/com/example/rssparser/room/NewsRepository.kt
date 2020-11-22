@@ -6,9 +6,9 @@ import com.example.rssparser.room.dao.NewsDao
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.utilities.APP_ACTIVITY
 
-class AppDatabaseHelper {
+class NewsRepository {
     companion object {
-        const val TAG: String = "Database"
+        const val TAG: String = "News_Repository"
     }
 
     private lateinit var dataBase: AppDatabase
