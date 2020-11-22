@@ -7,7 +7,7 @@ import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.NewsRepository
 import com.example.rssparser.rss.NetworkService
-import com.example.rssparser.utilities.APP_NEWS_REPOSITORY
+import com.example.rssparser.utilities.APP
 import com.example.rssparser.utilities.formatDescription
 import com.example.rssparser.views.main_screen.MainAdapter
 import com.example.rssparser.views.main_screen.MainFragment
@@ -43,7 +43,7 @@ class MainViewModel : ViewModel() {
 
     private fun createLoadObservable(): Observable<NewsRepository> =
         Observable.create { emitter ->
-            emitter.onNext(APP_NEWS_REPOSITORY)
+            emitter.onNext(APP.appNewsRepository)
         }
 
     @SuppressLint("CheckResult")
@@ -78,8 +78,7 @@ class MainViewModel : ViewModel() {
                         val tmp = article?.channel?.newsList!!
                         if (!tmp.isNullOrEmpty()) {
                             Thread {
-                                val dataToDelete = dataList
-                                APP_NEWS_REPOSITORY.deleteFromDatabase(dataToDelete)
+                                APP.appNewsRepository.database().clearAllTables()
                             }.start()
                             dataList = tmp
                             formatData(dataList)
@@ -103,7 +102,7 @@ class MainViewModel : ViewModel() {
     private fun saveFeed() {
         val saveObservable = createSaveObservable()
         saveObservable.observeOn(Schedulers.io()).subscribe {
-            APP_NEWS_REPOSITORY.saveToDatabase(it)
+            APP.appNewsRepository.saveToDatabase(it)
         }
     }
 
