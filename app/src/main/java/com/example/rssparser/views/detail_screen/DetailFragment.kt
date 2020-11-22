@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
 import com.example.rssparser.models.NewsModel
+import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.view_models.DetailViewModel
 
 
@@ -41,6 +42,14 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        APP_ACTIVITY.mToolbar.setNavigationOnClickListener {
+            APP_ACTIVITY.supportFragmentManager.popBackStack()
+        }
     }
 
     // Возможно сделал неправильно и не стоит снова инициализировать

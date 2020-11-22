@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentMainBinding
+import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.view_models.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -57,6 +58,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onStart()
         mLayoutManager = LinearLayoutManager(this.context)
         initRecyclerView()
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onResume() {
