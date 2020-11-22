@@ -44,7 +44,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = MainViewModel()
-        mViewModel.initViewModel()
+        lifecycle.addObserver(mViewModel)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mViewModel.saveData()
     }
 
     override fun onStart() {
@@ -52,11 +57,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         mLayoutManager = LinearLayoutManager(this.context)
         initRecyclerView()
         mRecyclerView.scrollToPosition(mRecyclerViewPosition)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mViewModel.saveData()
     }
 
     override fun onPause() {

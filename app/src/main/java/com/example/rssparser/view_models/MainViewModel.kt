@@ -2,6 +2,9 @@ package com.example.rssparser.view_models
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.models.NewsModel
@@ -17,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel : ViewModel(), LifecycleObserver {
 
     companion object {
         var dataList: List<NewsModel> = mutableListOf()
@@ -25,6 +28,7 @@ class MainViewModel : ViewModel() {
 
     lateinit var mAdapter: MainAdapter
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initViewModel() {
         mAdapter = MainAdapter(dataList)
         if (dataList.isEmpty())
