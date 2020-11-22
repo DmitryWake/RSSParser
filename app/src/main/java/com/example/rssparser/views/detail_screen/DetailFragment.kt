@@ -15,6 +15,7 @@ import com.example.rssparser.view_models.DetailViewModel
 class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragment_detail) {
 
     companion object {
+        // Тег для вывода в консоль
         const val NEWS_MODEL_TAG = "news_model"
     }
 
@@ -42,6 +43,8 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
         initViewModel(savedInstanceState)
     }
 
+    // Возможно сделал неправильно и не стоит снова инициализировать
+    // ViewModel после поворота
     private fun initViewModel(savedInstanceState: Bundle?) {
         mViewModel = DetailViewModel()
         if (savedInstanceState != null && savedInstanceState.containsKey(NEWS_MODEL_TAG))

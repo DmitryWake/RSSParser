@@ -16,12 +16,14 @@ fun replaceFragment(fragment: Fragment, addToBackStack: Boolean) {
     }
 }
 
+// Загружаем фото по url с помощью DataBinding
 @BindingAdapter("app:url")
 fun loadImage(view: ImageView, url: String) {
     Picasso.get().load(url).fit().placeholder(R.drawable.ic_base_image).into(view)
 }
 
-
+// У загружаемого описания первый символ \n
+// Чтобы не было пустых мест - форматируем
 fun String.formatDescription(): String {
     return this.substring(1)
 }

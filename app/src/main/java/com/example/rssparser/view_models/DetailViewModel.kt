@@ -7,6 +7,7 @@ import com.example.rssparser.utilities.APP_ACTIVITY
 
 class DetailViewModel: BaseNewsViewModel() {
 
+    // Переход в браузер по ссылке
     fun onClickReadNextButton() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mNewsModel.link))
         startActivity(APP_ACTIVITY, intent, null)

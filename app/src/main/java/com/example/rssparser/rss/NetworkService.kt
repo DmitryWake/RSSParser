@@ -5,11 +5,13 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 class NetworkService private constructor() {
     companion object {
+        // Получение постоянного состояния
         val mInstance: NetworkService = NetworkService()
+        // Ссылка на ленту
         const val BASE_URL = "https://lenta.ru/rss/"
     }
 
-    private var mRetrofit: Retrofit
+    private val mRetrofit: Retrofit
 
     init {
         mRetrofit = Retrofit.Builder()

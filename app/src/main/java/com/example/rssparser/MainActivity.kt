@@ -23,7 +23,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFields() {
+        // Так как у нас архитектура одного активити
+        // Делаем так, чтобы ссылка всегда была под рукой
         APP_ACTIVITY = this
+        // Когда получили ссылку, проводим инициализацию базы данных
         APP.appNewsRepository.initDatabase()
     }
 

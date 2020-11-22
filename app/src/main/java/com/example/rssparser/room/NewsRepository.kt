@@ -7,12 +7,14 @@ import com.example.rssparser.utilities.APP
 
 class NewsRepository {
     companion object {
+        // Тег для консоли
         const val TAG: String = "News_Repository"
     }
 
     private lateinit var dataBase: AppDatabase
     private lateinit var newsDao: NewsDao
 
+    // Получение с помощью Dagger
     fun initDatabase() {
         dataBase = APP.appComponent().getDatabase()
         newsDao = APP.appComponent().getNewsDao()

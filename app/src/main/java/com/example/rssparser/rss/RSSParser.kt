@@ -10,9 +10,10 @@ import java.io.InputStream
 import java.lang.RuntimeException
 import java.net.URL
 
-// @deprecated we recommend switching to the RSSFeedApi.
+// Первая версия RSS парсера
 class RSSParser(private val url: URL) {
 
+    // Нужные теги
     companion object {
         const val TAG = "RSSParser"
         const val TITLE = "title"
@@ -24,17 +25,20 @@ class RSSParser(private val url: URL) {
         const val ENCLOSURE = "enclosure"
     }
 
+    // Успешная ли загрузка
     var isSuccessful: Boolean = true
 
     fun readFeed(): List<NewsModel> {
 
         val results = mutableListOf<NewsModel>()
 
+        // Проверка: находимся ли мы в теге <item> ... </item>
         var isItems = false
 
         try {
             var newsModel = NewsModel()
 
+            // Инициализация парсера
             val factory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true
             val parser = factory.newPullParser()
@@ -49,9 +53,11 @@ class RSSParser(private val url: URL) {
                     }
                     if (isItems) {
                         when (parser.name) {
+                            // Если тег item
                             ITEM -> {
                                 newsModel = NewsModel()
                             }
+                            // Если тег guid и т.д.
                             GUID -> {
                                 parser.next()
                                 newsModel.guid = parser.text
@@ -69,6 +75,7 @@ class RSSParser(private val url: URL) {
                                 newsModel.description = parser.text.formatDescription()
                             }
                             ENCLOSURE -> {
+                                // Ищем атрибут url
                                 for (i in 0 until parser.attributeCount) {
                                     if (parser.getAttributeName(i) == URL)
                                         newsModel.enclosure.url = parser.getAttributeValue(i)
@@ -76,6 +83,7 @@ class RSSParser(private val url: URL) {
                             }
                         }
                     }
+                    // Если встретили закрывающий тег Item
                 } else if (parser.eventType == XmlPullParser.END_TAG && parser.name == ITEM) {
                     results.add(newsModel)
                 }

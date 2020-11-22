@@ -18,6 +18,7 @@ class MainAdapter(private var dataList: List<NewsModel>) :
             parent,
             false
         )
+        // Передаём биндинг для ViewModel
         return MainHolder(binding)
     }
 

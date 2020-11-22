@@ -23,11 +23,17 @@ import retrofit2.Response
 class MainViewModel : ViewModel(), LifecycleObserver {
 
     companion object {
+        // Можно было реализовать через LiveData
+        // Но я пока плохо с этим знаком
         var dataList: List<NewsModel> = mutableListOf()
+
+        // Тег для вывода в Logcat
+        const val TAG = "MainFragment"
     }
 
     lateinit var mAdapter: MainAdapter
 
+    // Вызывается при onCreate фрагмента
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initViewModel() {
         mAdapter = MainAdapter(dataList)
@@ -36,7 +42,11 @@ class MainViewModel : ViewModel(), LifecycleObserver {
     }
 
     private fun initData() {
+        // Сначала загружаем ленту из памяти
+        // Вдруг у пользователя очень медленный интернет
+        // Или вообще нет интернета
         loadFeed()
+        // Скачиваем ленту с сайта
         downloadFeed()
     }
 
@@ -44,6 +54,7 @@ class MainViewModel : ViewModel(), LifecycleObserver {
         saveFeed()
     }
 
+    // Observable для загрузку из локальной бд
     private fun createLoadObservable(): Observable<NewsRepository> =
         Observable.create { emitter ->
             emitter.onNext(APP.appNewsRepository)
@@ -53,11 +64,17 @@ class MainViewModel : ViewModel(), LifecycleObserver {
     private fun loadFeed() {
         val loadObservable = createLoadObservable()
         loadObservable
+            // Observable создан в UI потоке
             .subscribeOn(AndroidSchedulers.mainThread())
+            // Выполняем в IO потоке
             .observeOn(Schedulers.io())
+            // Преобразовываем данные
             .map { it.loadFromDatabase() }
+            // Выполняем в UI потоке
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
+                // Так как при сохранении данные могли перемешаться
+                // Сортируем их по дате и реверсим
                 dataList = it.sortedBy { newsModel ->
                     newsModel.pubDate
                 }.reversed()
@@ -78,6 +95,9 @@ class MainViewModel : ViewModel(), LifecycleObserver {
                     if (response.isSuccessful) {
                         val article = response.body()
                         val tmp = article?.channel?.newsList!!
+                        // Если получанная лента не пустая и содержит новости,
+                        // то удаляем прошлые записи из памяти,
+                        // отображаем ленту на экране
                         if (!tmp.isNullOrEmpty()) {
                             Thread {
                                 APP.appNewsRepository.database().clearAllTables()
@@ -90,24 +110,27 @@ class MainViewModel : ViewModel(), LifecycleObserver {
                 }
 
                 override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
-                    Log.e(MainFragment.TAG, t.message.toString(), t)
+                    Log.e(TAG, t.message.toString(), t)
                 }
             })
     }
 
     private fun createSaveObservable(): Observable<List<NewsModel>> =
         Observable.create { emitter ->
+            // Помещаем лист на сохранение в эмитер
             emitter.onNext(dataList)
         }
 
     @SuppressLint("CheckResult")
     private fun saveFeed() {
         val saveObservable = createSaveObservable()
+        // Сохраняем в IO потоке
         saveObservable.observeOn(Schedulers.io()).subscribe {
             APP.appNewsRepository.saveToDatabase(it)
         }
     }
 
+    // Форматируем описание NewModel
     private fun formatData(dataList: List<NewsModel>) {
         for (i in dataList.indices) {
             dataList[i].description = dataList[i].description.formatDescription()

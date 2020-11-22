@@ -10,12 +10,18 @@ import com.example.rssparser.utilities.APP
 
 
 class App : Application() {
+    // Dagger App Component
     private lateinit var appComponent: AppComponent
+    // Dagger Network Component
     private lateinit var networkComponent: NetworkComponent
+    // Так как в репозитории содержится локальная бд
+    // То обьявляем её в Application, чтобы не было
+    // Повторных созданий
     lateinit var appNewsRepository: NewsRepository
 
     override fun onCreate() {
         super.onCreate()
+        // Получаем ссылку на Application для удобства
         APP = this
         appComponent = DaggerAppComponent.create()
         networkComponent = DaggerNetworkComponent.create()

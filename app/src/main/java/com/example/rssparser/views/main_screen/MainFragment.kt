@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
-        const val TAG = "MainFragment"
+        // Храним позицию recycler view
         var mRecyclerViewPosition: Int = 0
     }
 
@@ -44,6 +44,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = MainViewModel()
+        // Вешаем слушателя, который будет вызывать нужные методы
         lifecycle.addObserver(mViewModel)
     }
 
@@ -56,11 +57,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onStart()
         mLayoutManager = LinearLayoutManager(this.context)
         initRecyclerView()
+    }
+
+    override fun onResume() {
+        super.onResume()
         mRecyclerView.scrollToPosition(mRecyclerViewPosition)
     }
 
     override fun onPause() {
         super.onPause()
+        // Сохраняем позицию RecyclerView
         mRecyclerViewPosition = mLayoutManager.findFirstVisibleItemPosition()
     }
 

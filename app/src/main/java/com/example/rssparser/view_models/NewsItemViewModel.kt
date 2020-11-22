@@ -5,6 +5,7 @@ import com.example.rssparser.views.detail_screen.DetailFragment
 
 class NewsItemViewModel: BaseNewsViewModel() {
 
+    // При клике на элемент переход к его детальному представлению
     fun onClick() {
         replaceFragment(DetailFragment(mNewsModel), true)
     }
