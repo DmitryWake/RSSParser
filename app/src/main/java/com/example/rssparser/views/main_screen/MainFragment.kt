@@ -51,7 +51,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        mViewModel.saveData()
     }
 
     override fun onStart() {

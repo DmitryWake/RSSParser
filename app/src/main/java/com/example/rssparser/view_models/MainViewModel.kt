@@ -26,6 +26,7 @@ class MainViewModel : ViewModel(), LifecycleObserver {
         // Можно было реализовать через LiveData
         // Но я пока плохо с этим знаком
         var dataList: List<NewsModel> = mutableListOf()
+        var isDataLoaded = false
 
         // Тег для вывода в Logcat
         const val TAG = "MainFragment"
@@ -50,8 +51,11 @@ class MainViewModel : ViewModel(), LifecycleObserver {
         downloadFeed()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun saveData() {
-        saveFeed()
+        // если мы обновляли список - то сохраняем
+        if (isDataLoaded)
+            saveFeed()
     }
 
     // Observable для загрузку из локальной бд
@@ -94,11 +98,12 @@ class MainViewModel : ViewModel(), LifecycleObserver {
                         // то удаляем прошлые записи из памяти,
                         // отображаем ленту на экране
                         if (!tmp.isNullOrEmpty()) {
-                            Thread{
+                            Thread {
                                 APP.appNewsRepository.database().clearAllTables()
                             }.start()
                             dataList = tmp
                             formatData(dataList)
+                            isDataLoaded = true
                             mAdapter.changeData(dataList)
                         }
                     }
