@@ -73,12 +73,7 @@ class MainViewModel : ViewModel(), LifecycleObserver {
             // Выполняем в UI потоке
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                // Так как при сохранении данные могли перемешаться
-                // Сортируем их по дате и реверсим
-                dataList = it.sortedBy { newsModel ->
-                    newsModel.pubDate
-                }.reversed()
-                formatData(dataList)
+                dataList = it
                 mAdapter.changeData(dataList)
             }
     }
@@ -99,7 +94,7 @@ class MainViewModel : ViewModel(), LifecycleObserver {
                         // то удаляем прошлые записи из памяти,
                         // отображаем ленту на экране
                         if (!tmp.isNullOrEmpty()) {
-                            Thread {
+                            Thread{
                                 APP.appNewsRepository.database().clearAllTables()
                             }.start()
                             dataList = tmp

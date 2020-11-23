@@ -1,4 +1,4 @@
-package com.example.rssparser.views.detail_screen
+    package com.example.rssparser.views.detail_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
