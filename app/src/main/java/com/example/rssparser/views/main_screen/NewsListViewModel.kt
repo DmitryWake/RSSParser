@@ -1,26 +1,26 @@
-package com.example.rssparser.view_models
+package com.example.rssparser.views.main_screen
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.rssparser.App
 import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.NewsRepository
-import com.example.rssparser.utilities.APP
 import com.example.rssparser.utilities.formatDescription
-import com.example.rssparser.views.main_screen.MainAdapter
-import com.example.rssparser.views.main_screen.MainFragment
+import com.example.rssparser.views.main_screen.adapter.MainAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class MainViewModel : ViewModel(), LifecycleObserver {
+class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
+
+
+    val newsListLiveData = MutableLiveData<List<NewsModel>>()
 
     companion object {
         // Можно было реализовать через LiveData
@@ -32,14 +32,13 @@ class MainViewModel : ViewModel(), LifecycleObserver {
         const val TAG = "MainFragment"
     }
 
-    lateinit var mAdapter: MainAdapter
+    var mAdapter = MainAdapter()
+
 
     // Вызывается при onCreate фрагмента
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initViewModel() {
-        mAdapter = MainAdapter(dataList)
-        if (dataList.isEmpty())
-            initData()
+        initData()
     }
 
     private fun initData() {
@@ -61,7 +60,7 @@ class MainViewModel : ViewModel(), LifecycleObserver {
     // Observable для загрузку из локальной бд
     private fun createLoadObservable(): Observable<NewsRepository> =
         Observable.create { emitter ->
-            emitter.onNext(APP.appNewsRepository)
+            emitter.onNext(App.appNewsRepository)
         }
 
     @SuppressLint("CheckResult")
@@ -77,13 +76,15 @@ class MainViewModel : ViewModel(), LifecycleObserver {
             // Выполняем в UI потоке
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                dataList = it
-                mAdapter.changeData(dataList)
+                if (it.isNotEmpty()) {
+                    newsListLiveData.value = it
+                    dataList = it
+                }
             }
     }
 
     private fun downloadFeed() {
-        APP.networkComponent().getNetworkService()
+        App.appComponent.getNetworkService()
             .getRSSApi()
             .getNews()
             .enqueue(object : Callback<ArticleResponse> {
@@ -99,12 +100,13 @@ class MainViewModel : ViewModel(), LifecycleObserver {
                         // отображаем ленту на экране
                         if (!tmp.isNullOrEmpty()) {
                             Thread {
-                                APP.appNewsRepository.database().clearAllTables()
+                                App.appNewsRepository.database().clearAllTables()
                             }.start()
                             dataList = tmp
                             formatData(dataList)
                             isDataLoaded = true
-                            mAdapter.changeData(dataList)
+
+                            newsListLiveData.value = dataList
                         }
                     }
                 }
@@ -126,7 +128,7 @@ class MainViewModel : ViewModel(), LifecycleObserver {
         val saveObservable = createSaveObservable()
         // Сохраняем в IO потоке
         saveObservable.observeOn(Schedulers.io()).subscribe {
-            APP.appNewsRepository.saveToDatabase(it)
+            App.appNewsRepository.saveToDatabase(it)
         }
     }
 

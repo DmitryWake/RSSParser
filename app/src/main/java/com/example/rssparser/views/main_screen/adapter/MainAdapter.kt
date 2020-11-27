@@ -1,4 +1,4 @@
-package com.example.rssparser.views.main_screen
+package com.example.rssparser.views.main_screen.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,9 @@ import com.example.rssparser.R
 import com.example.rssparser.databinding.NewsItemBinding
 import com.example.rssparser.models.NewsModel
 
-class MainAdapter(private var dataList: List<NewsModel>) :
-    RecyclerView.Adapter<MainHolder>() {
+class MainAdapter() : RecyclerView.Adapter<MainHolder>() {
+
+    private var dataList: List<NewsModel> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = DataBindingUtil.inflate<NewsItemBinding>(

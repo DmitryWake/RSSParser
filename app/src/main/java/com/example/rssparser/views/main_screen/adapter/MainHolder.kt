@@ -1,4 +1,4 @@
-package com.example.rssparser.views.main_screen
+package com.example.rssparser.views.main_screen.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.databinding.NewsItemBinding

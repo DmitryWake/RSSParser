@@ -1,5 +1,6 @@
 package com.example.rssparser.rss
 
+import com.example.rssparser.App
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
@@ -11,14 +12,7 @@ class NetworkService private constructor() {
         const val BASE_URL = "https://lenta.ru/rss/"
     }
 
-    private val mRetrofit: Retrofit
+    private val mRetrofit: Retrofit = App.appComponent.getRetrofit()
 
-    init {
-        mRetrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build()
-    }
-
-    fun getRSSApi(): RSSFeedApi = mRetrofit.create(RSSFeedApi::class.java)
+    fun getRSSApi(): RSSFeedApi = App.appComponent.getRSSFeedApi()
 }

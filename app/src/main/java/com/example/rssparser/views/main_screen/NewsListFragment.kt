@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rssparser.MainActivity
 import com.example.rssparser.R
-import com.example.rssparser.databinding.FragmentMainBinding
-import com.example.rssparser.utilities.APP_ACTIVITY
-import com.example.rssparser.view_models.MainViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
+import com.example.rssparser.dagger.components.NewsListFragmentSubcomponent
+import com.example.rssparser.databinding.FragmentNewslistBinding
+import com.example.rssparser.models.NewsModel
+import com.example.rssparser.views.main_screen.adapter.MainAdapter
+import kotlinx.android.synthetic.main.fragment_newslist.*
 
 
-class MainFragment : Fragment(R.layout.fragment_main) {
+class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     companion object {
         // Храним позицию recycler view
@@ -24,40 +27,47 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mLayoutManager: LinearLayoutManager
+    private val adapter = MainAdapter()
+    private lateinit var mViewModel: NewsListViewModel
 
-    private lateinit var mViewModel: MainViewModel
+    private lateinit var component: NewsListFragmentSubcomponent
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = DataBindingUtil.inflate<FragmentMainBinding>(
+    ): View {
+        val binding = DataBindingUtil.inflate<FragmentNewslistBinding>(
             inflater,
-            R.layout.fragment_main,
+            R.layout.fragment_newslist,
             container,
             false
         )
         binding.viewModel = mViewModel
+        mViewModel.apply {
+            newsListLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setItems)
+        }
+
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel = MainViewModel()
+        component = (activity as MainActivity).component().getMainActivitySubcomponent().revListComponent()
+        mViewModel = ViewModelProviders.of(this, component.viewModelFactory()).get(NewsListViewModel::class.java)
         // Вешаем слушателя, который будет вызывать нужные методы
         lifecycle.addObserver(mViewModel)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+    private fun setItems(items: List<NewsModel>) {
+        adapter.changeData(items)
     }
 
     override fun onStart() {
         super.onStart()
         mLayoutManager = LinearLayoutManager(this.context)
         initRecyclerView()
-        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onResume() {
@@ -74,7 +84,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun initRecyclerView() {
         mRecyclerView = main_recycler_view
         mRecyclerView.isNestedScrollingEnabled = false
-        mRecyclerView.adapter = mViewModel.mAdapter
+        mRecyclerView.adapter = adapter
         mRecyclerView.layoutManager = mLayoutManager
     }
 }

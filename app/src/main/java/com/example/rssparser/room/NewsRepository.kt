@@ -1,9 +1,9 @@
 package com.example.rssparser.room
 
 import android.util.Log
+import com.example.rssparser.App
 import com.example.rssparser.room.dao.NewsDao
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.utilities.APP
 
 class NewsRepository {
     companion object {
@@ -16,8 +16,8 @@ class NewsRepository {
 
     // Получение с помощью Dagger
     fun initDatabase() {
-        dataBase = APP.appComponent().getDatabase()
-        newsDao = APP.appComponent().getNewsDao()
+        dataBase = App.appComponent.getDatabase()
+        newsDao = App.appComponent.getNewsDao()
     }
 
     fun deleteFromDatabase(dataList: List<NewsModel>) {

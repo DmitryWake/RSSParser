@@ -1,4 +1,4 @@
-    package com.example.rssparser.views.detail_screen
+package com.example.rssparser.views.detail_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.utilities.APP_ACTIVITY
 import com.example.rssparser.view_models.DetailViewModel
 
 
@@ -46,9 +46,9 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
 
     override fun onStart() {
         super.onStart()
-        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        APP_ACTIVITY.mToolbar.setNavigationOnClickListener {
-            APP_ACTIVITY.supportFragmentManager.popBackStack()
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).mToolbar.setNavigationOnClickListener {
+            (activity as MainActivity).supportFragmentManager.popBackStack()
         }
     }
 

@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.rssparser.view_models.MainViewModel" />
+            type="com.example.rssparser.views.main_screen.NewsListViewModel" />
 
     </data>
 
@@ -14,7 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.main_screen.MainFragment">
+        tools:context=".views.main_screen.NewsListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_recycler_view"
@@ -27,4 +27,5 @@
             tools:listitem="@layout/news_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

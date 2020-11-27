@@ -3,15 +3,16 @@ package com.example.rssparser.utilities
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
+import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.squareup.picasso.Picasso
 
-fun replaceFragment(fragment: Fragment, addToBackStack: Boolean) {
+fun replaceFragment(context: MainActivity, fragment: Fragment,addToBackStack: Boolean) {
     if (addToBackStack) {
-        APP_ACTIVITY.supportFragmentManager.beginTransaction()
+        context.supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     } else {
-        APP_ACTIVITY.supportFragmentManager.beginTransaction()
+        context.supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment).commit()
     }
 }
