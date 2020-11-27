@@ -4,8 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
 import com.example.rssparser.MainActivity
+import javax.inject.Inject
 
-class DetailViewModel: BaseNewsViewModel() {
+class DetailViewModel @Inject constructor() : BaseNewsViewModel() {
 
     // Переход в браузер по ссылке
     fun onClickReadNextButton() {

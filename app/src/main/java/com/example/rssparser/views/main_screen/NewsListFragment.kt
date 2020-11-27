@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
-import com.example.rssparser.dagger.components.NewsListFragmentSubcomponent
 import com.example.rssparser.databinding.FragmentNewslistBinding
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.views.main_screen.adapter.MainAdapter
@@ -53,7 +52,7 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component = (activity as MainActivity).component().getMainActivitySubcomponent().revListComponent()
+        component = (activity as MainActivity).component().getMainActivitySubcomponent().newsListComponent()
         mViewModel = ViewModelProviders.of(this, component.viewModelFactory()).get(NewsListViewModel::class.java)
         // Вешаем слушателя, который будет вызывать нужные методы
         lifecycle.addObserver(mViewModel)

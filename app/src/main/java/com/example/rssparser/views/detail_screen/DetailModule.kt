@@ -1,8 +1,8 @@
-package com.example.rssparser.dagger.components
+package com.example.rssparser.views.detail_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rssparser.views.main_screen.NewsListViewModel
+import com.example.rssparser.view_models.DetailViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -12,13 +12,13 @@ import javax.inject.Provider
  */
 @Suppress("UNCHECKED_CAST")
 @Module
-class NewsListModule {
+class DetailModule {
 
     @Provides
-    fun viewModelFactory(newsListProvider: Provider<NewsListViewModel>): ViewModelProvider.Factory {
+    fun viewModelFactory(detailProvider: Provider<DetailViewModel>): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return newsListProvider.get() as T
+                return detailProvider.get() as T
             }
         }
     }
