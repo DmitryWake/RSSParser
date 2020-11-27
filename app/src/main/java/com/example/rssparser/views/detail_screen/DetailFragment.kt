@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.view_models.DetailViewModel
+import com.example.rssparser.views.main_screen.NewsListViewModel
 
 
 class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragment_detail) {
@@ -22,13 +24,15 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
 
     private lateinit var mViewModel: DetailViewModel
 
+    private lateinit var component: DetailFragmentSubcomponent
+
     constructor() : this(NewsModel())
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = DataBindingUtil.inflate<FragmentDetailBinding>(
             inflater,
             R.layout.fragment_detail,
@@ -41,6 +45,7 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component = (activity as MainActivity).component().getMainActivitySubcomponent().detailComponent()
         initViewModel(savedInstanceState)
     }
 
@@ -52,10 +57,8 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
         }
     }
 
-    // Возможно сделал неправильно и не стоит снова инициализировать
-    // ViewModel после поворота
     private fun initViewModel(savedInstanceState: Bundle?) {
-        mViewModel = DetailViewModel()
+        mViewModel = ViewModelProviders.of(this, component.viewModelFactory()).get(DetailViewModel::class.java)
         if (savedInstanceState != null && savedInstanceState.containsKey(NEWS_MODEL_TAG))
             newsModel = savedInstanceState.getSerializable(NEWS_MODEL_TAG) as NewsModel
         mViewModel.initViewModel(newsModel)
