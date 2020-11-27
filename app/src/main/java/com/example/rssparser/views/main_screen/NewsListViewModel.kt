@@ -1,6 +1,8 @@
 package com.example.rssparser.views.main_screen
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.rssparser.App
@@ -8,7 +10,6 @@ import com.example.rssparser.models.ArticleResponse
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.NewsRepository
 import com.example.rssparser.utilities.formatDescription
-import com.example.rssparser.views.main_screen.adapter.MainAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,8 +20,8 @@ import javax.inject.Inject
 
 class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
 
-
     val newsListLiveData = MutableLiveData<List<NewsModel>>()
+    val isRefreshingLiveData = MutableLiveData<Boolean>()
 
     companion object {
         // Можно было реализовать через LiveData
@@ -32,13 +33,12 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
         const val TAG = "MainFragment"
     }
 
-    var mAdapter = MainAdapter()
-
 
     // Вызывается при onCreate фрагмента
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initViewModel() {
         initData()
+        println(newsListLiveData.value)
     }
 
     private fun initData() {
@@ -76,14 +76,14 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
             // Выполняем в UI потоке
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty() || newsListLiveData.value.isNullOrEmpty()) {
                     newsListLiveData.value = it
-                    dataList = it
                 }
             }
     }
 
     private fun downloadFeed() {
+        isRefreshingLiveData.value = true
         App.appComponent.getNetworkService()
             .getRSSApi()
             .getNews()
@@ -107,12 +107,14 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
                             isDataLoaded = true
 
                             newsListLiveData.value = dataList
+                            isRefreshingLiveData.value = false
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
                     Log.e(TAG, t.message.toString(), t)
+                    isRefreshingLiveData.value = false
                 }
             })
     }
@@ -137,6 +139,10 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
         for (i in dataList.indices) {
             dataList[i].description = dataList[i].description.formatDescription()
         }
+    }
+
+    fun onRefresh() {
+        downloadFeed()
     }
 
 }

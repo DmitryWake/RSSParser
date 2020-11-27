@@ -5,4 +5,5 @@
     <string name="description">Описание</string>
     <string name="read_next">Читать далее на сайте</string>
     <string name="image_of_news">Image of news</string>
+    <string name="empty_list_text">There is no news. Refresh the page</string>
 </resources>

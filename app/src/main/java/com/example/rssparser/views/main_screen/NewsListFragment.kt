@@ -15,6 +15,7 @@ import com.example.rssparser.databinding.FragmentNewslistBinding
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.views.main_screen.adapter.MainAdapter
 import kotlinx.android.synthetic.main.fragment_newslist.*
+import kotlinx.android.synthetic.main.fragment_newslist.view.*
 
 
 class NewsListFragment : Fragment(R.layout.fragment_newslist) {
@@ -45,6 +46,7 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         binding.viewModel = mViewModel
         mViewModel.apply {
             newsListLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setItems)
+            isRefreshingLiveData.observe({ viewLifecycleOwner.lifecycle}, ::changeRefreshing)
         }
 
         return binding.root
@@ -60,6 +62,14 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     private fun setItems(items: List<NewsModel>) {
         adapter.changeData(items)
+        if (items.isEmpty())
+            empty_list_text.visibility = View.VISIBLE
+        else
+            empty_list_text.visibility = View.GONE
+    }
+
+    private fun changeRefreshing(isRefreshing: Boolean) {
+        swipe_refresh_layout.isRefreshing = isRefreshing
     }
 
     override fun onStart() {
