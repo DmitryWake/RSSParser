@@ -1,4 +1,4 @@
-package com.example.rssparser.views.detail_screen
+package com.example.rssparser.views.detailscreen
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.rssparser.dagger.components.scope.FragmentScope

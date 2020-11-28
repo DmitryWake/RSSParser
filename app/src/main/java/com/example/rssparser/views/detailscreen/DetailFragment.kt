@@ -1,4 +1,4 @@
-package com.example.rssparser.views.detail_screen
+package com.example.rssparser.views.detailscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,7 @@ import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.view_models.DetailViewModel
-import com.example.rssparser.views.main_screen.NewsListViewModel
+import com.example.rssparser.viewmodels.DetailViewModel
 
 
 class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragment_detail) {

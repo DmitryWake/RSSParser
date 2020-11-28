@@ -1,8 +1,7 @@
-package com.example.rssparser.views.main_screen
+package com.example.rssparser.views.mainscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rssparser.views.main_screen.NewsListViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider

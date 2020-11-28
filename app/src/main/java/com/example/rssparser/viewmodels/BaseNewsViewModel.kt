@@ -1,4 +1,4 @@
-package com.example.rssparser.view_models
+package com.example.rssparser.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.rssparser.models.NewsModel

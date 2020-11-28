@@ -1,8 +1,6 @@
-package com.example.rssparser.views.main_screen
+package com.example.rssparser.views.mainscreen
 
 import android.annotation.SuppressLint
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.rssparser.App

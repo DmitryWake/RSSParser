@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.rssparser.views.main_screen.NewsListViewModel" />
+            type="com.example.rssparser.views.mainscreen.NewsListViewModel" />
 
     </data>
 
@@ -22,7 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".views.main_screen.NewsListFragment">
+            tools:context=".views.mainscreen.NewsListFragment">
 
             <TextView
                 android:id="@+id/empty_list_text"

@@ -1,4 +1,4 @@
-package com.example.rssparser.view_models
+package com.example.rssparser.viewmodels
 
 import android.content.Intent
 import android.net.Uri

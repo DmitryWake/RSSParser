@@ -1,4 +1,4 @@
-package com.example.rssparser.views.main_screen.adapter
+package com.example.rssparser.views.mainscreen.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

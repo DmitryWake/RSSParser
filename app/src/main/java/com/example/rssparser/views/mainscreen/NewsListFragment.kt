@@ -1,4 +1,4 @@
-package com.example.rssparser.views.main_screen
+package com.example.rssparser.views.mainscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentNewslistBinding
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.views.main_screen.adapter.MainAdapter
+import com.example.rssparser.views.mainscreen.adapter.MainAdapter
 import kotlinx.android.synthetic.main.fragment_newslist.*
 import kotlinx.android.synthetic.main.fragment_newslist.view.*
 

@@ -1,8 +1,8 @@
-package com.example.rssparser.view_models
+package com.example.rssparser.viewmodels
 
 import com.example.rssparser.MainActivity
 import com.example.rssparser.utilities.replaceFragment
-import com.example.rssparser.views.detail_screen.DetailFragment
+import com.example.rssparser.views.detailscreen.DetailFragment
 
 class NewsItemViewModel: BaseNewsViewModel() {
 
