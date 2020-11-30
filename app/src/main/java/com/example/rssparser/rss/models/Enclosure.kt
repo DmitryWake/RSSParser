@@ -1,4 +1,4 @@
-package com.example.rssparser.models
+package com.example.rssparser.rss.models
 
 import org.simpleframework.xml.Attribute
 

@@ -1,9 +1,10 @@
-package com.example.rssparser.viewmodels
+package com.example.rssparser.views.detailscreen
 
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
 import com.example.rssparser.MainActivity
+import com.example.rssparser.viewmodels.BaseNewsViewModel
 import javax.inject.Inject
 
 class DetailViewModel @Inject constructor() : BaseNewsViewModel() {

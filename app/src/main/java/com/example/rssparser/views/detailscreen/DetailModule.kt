@@ -2,7 +2,6 @@ package com.example.rssparser.views.detailscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rssparser.viewmodels.DetailViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider

@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentNewslistBinding
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.rss.models.NewsModel
 import com.example.rssparser.views.mainscreen.adapter.MainAdapter
 import kotlinx.android.synthetic.main.fragment_newslist.*
-import kotlinx.android.synthetic.main.fragment_newslist.view.*
 
 
 class NewsListFragment : Fragment(R.layout.fragment_newslist) {
@@ -31,6 +30,16 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
     private lateinit var mViewModel: NewsListViewModel
 
     private lateinit var component: NewsListFragmentSubcomponent
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        component =
+            (activity as MainActivity).component().getMainActivitySubcomponent().newsListComponent()
+        mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
+            .get(NewsListViewModel::class.java)
+        // Вешаем слушателя, который будет вызывать нужные методы
+        lifecycle.addObserver(mViewModel)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,14 +59,6 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         }
 
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        component = (activity as MainActivity).component().getMainActivitySubcomponent().newsListComponent()
-        mViewModel = ViewModelProviders.of(this, component.viewModelFactory()).get(NewsListViewModel::class.java)
-        // Вешаем слушателя, который будет вызывать нужные методы
-        lifecycle.addObserver(mViewModel)
     }
 
     private fun setItems(items: List<NewsModel>) {

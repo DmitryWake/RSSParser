@@ -1,13 +1,12 @@
 package com.example.rssparser.rss
 
 import android.util.Log
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.rss.models.NewsModel
 import com.example.rssparser.utilities.formatDescription
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.io.InputStream
-import java.lang.RuntimeException
 import java.net.URL
 
 // Первая версия RSS парсера

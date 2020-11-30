@@ -1,7 +1,7 @@
 package com.example.rssparser.room.dao
 
 import androidx.room.*
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.rss.models.NewsModel
 
 @Dao
 interface NewsDao {

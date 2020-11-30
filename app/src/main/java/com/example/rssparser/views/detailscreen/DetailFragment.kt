@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
-import com.example.rssparser.models.NewsModel
-import com.example.rssparser.viewmodels.DetailViewModel
+import com.example.rssparser.rss.models.NewsModel
 
 
 class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragment_detail) {
@@ -27,6 +26,13 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
 
     constructor() : this(NewsModel())
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        component =
+            (activity as MainActivity).component().getMainActivitySubcomponent().detailComponent()
+        initViewModel(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,12 +46,6 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
         )
         binding.viewModel = mViewModel
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        component = (activity as MainActivity).component().getMainActivitySubcomponent().detailComponent()
-        initViewModel(savedInstanceState)
     }
 
     override fun onStart() {

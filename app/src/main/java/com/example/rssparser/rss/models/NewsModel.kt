@@ -1,4 +1,4 @@
-package com.example.rssparser.models
+package com.example.rssparser.rss.models
 
 import androidx.room.Embedded
 import androidx.room.Entity

@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.rssparser.App
-import com.example.rssparser.models.ArticleResponse
-import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.NewsRepository
+import com.example.rssparser.rss.models.ArticleResponse
+import com.example.rssparser.rss.models.NewsModel
 import com.example.rssparser.utilities.formatDescription
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -3,7 +3,7 @@ package com.example.rssparser.room
 import android.util.Log
 import com.example.rssparser.App
 import com.example.rssparser.room.dao.NewsDao
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.rss.models.NewsModel
 
 class NewsRepository {
     companion object {

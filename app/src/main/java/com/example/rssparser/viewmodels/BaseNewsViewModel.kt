@@ -1,7 +1,7 @@
 package com.example.rssparser.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.rssparser.models.NewsModel
+import com.example.rssparser.rss.models.NewsModel
 
 open class BaseNewsViewModel: ViewModel() {
 
