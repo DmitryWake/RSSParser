@@ -63,14 +63,16 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as MainActivity).mToolbar.setNavigationOnClickListener {
-            (activity as MainActivity).supportFragmentManager.popBackStack()
+        val activity = activity as MainActivity
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activity.mToolbar.setNavigationOnClickListener {
+            activity.supportFragmentManager.popBackStack()
         }
     }
 
     private fun initViewModel(savedInstanceState: Bundle?) {
-        mViewModel = ViewModelProviders.of(this, component.viewModelFactory()).get(DetailViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
+            .get(DetailViewModel::class.java)
         if (savedInstanceState != null && savedInstanceState.containsKey(NEWS_MODEL_TAG))
             newsModel = savedInstanceState.getSerializable(NEWS_MODEL_TAG) as NewsModel
         mViewModel.initViewModel(newsModel)
