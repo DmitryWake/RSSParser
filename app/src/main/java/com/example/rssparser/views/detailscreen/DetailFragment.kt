@@ -1,9 +1,12 @@
 package com.example.rssparser.views.detailscreen
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -45,7 +48,17 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
             false
         )
         binding.viewModel = mViewModel
+        mViewModel.apply {
+            linkLiveData.observe({ viewLifecycleOwner.lifecycle }, ::readNext)
+        }
         return binding.root
+    }
+
+    private fun readNext(link: String?) {
+        if (!link.isNullOrEmpty()) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            ContextCompat.startActivity(activity as MainActivity, intent, null)
+        }
     }
 
     override fun onStart() {
