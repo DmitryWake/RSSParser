@@ -4,22 +4,23 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.rssparser.App
+import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.NewsRepository
-import com.example.rssparser.rss.models.ArticleResponse
-import com.example.rssparser.rss.models.NewsModel
+import com.example.rssparser.rss.models.NewsModelApi
 import com.example.rssparser.utilities.formatDescription
+import com.example.rssparser.views.mainscreen.interactor.NewsListLoader
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
-class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
+class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoader) : ViewModel(),
+    LifecycleObserver {
 
     val newsListLiveData = MutableLiveData<List<NewsModel>>()
     val isRefreshingLiveData = MutableLiveData<Boolean>()
+    lateinit var loader: NewsListLoader
 
     companion object {
         // Можно было реализовать через LiveData
@@ -35,6 +36,7 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
     // Вызывается при onCreate фрагмента
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initViewModel() {
+        loader = App.appComponent.getNewsListLoader()
         initData()
         println(newsListLiveData.value)
     }
@@ -70,7 +72,7 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
             // Выполняем в IO потоке
             .observeOn(Schedulers.io())
             // Преобразовываем данные
-            .map { it.loadFromDatabase() }
+            .map { it.getAll() }
             // Выполняем в UI потоке
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -82,38 +84,22 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
 
     private fun downloadFeed() {
         isRefreshingLiveData.value = true
-        App.appComponent.getNetworkService()
-            .getRSSApi()
-            .getNews()
-            .enqueue(object : Callback<ArticleResponse> {
-                override fun onResponse(
-                    call: Call<ArticleResponse>,
-                    response: Response<ArticleResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val article = response.body()
-                        val tmp = article?.channel?.newsList!!
-                        // Если получанная лента не пустая и содержит новости,
-                        // то удаляем прошлые записи из памяти,
-                        // отображаем ленту на экране
-                        if (!tmp.isNullOrEmpty()) {
-                            Thread {
-                                App.appNewsRepository.database().clearAllTables()
-                            }.start()
-                            dataList = tmp
-                            formatData(dataList)
-                            isDataLoaded = true
-
-                            newsListLiveData.value = dataList
-                            isRefreshingLiveData.value = false
-                        }
+        loader.getNewList()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : DisposableSingleObserver<List<NewsModel>>() {
+                override fun onSuccess(t: List<NewsModel>) {
+                    if (t.isNotEmpty()) {
+                        newsListLiveData.value = t
                     }
-                }
-
-                override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
-                    Log.e(TAG, t.message.toString(), t)
                     isRefreshingLiveData.value = false
                 }
+
+                override fun onError(e: Throwable) {
+                    isRefreshingLiveData.value = false
+                    Log.e(TAG, e.message.toString())
+                }
+
             })
     }
 
@@ -128,12 +114,12 @@ class NewsListViewModel @Inject constructor() : ViewModel(), LifecycleObserver {
         val saveObservable = createSaveObservable()
         // Сохраняем в IO потоке
         saveObservable.observeOn(Schedulers.io()).subscribe {
-            App.appNewsRepository.saveToDatabase(it)
+            App.appNewsRepository.saveList(it)
         }
     }
 
     // Форматируем описание NewModel
-    private fun formatData(dataList: List<NewsModel>) {
+    private fun formatData(dataList: List<NewsModelApi>) {
         for (i in dataList.indices) {
             dataList[i].description = dataList[i].description.formatDescription()
         }

@@ -1,7 +1,7 @@
 package com.example.rssparser.room.dao
 
 import androidx.room.*
-import com.example.rssparser.rss.models.NewsModel
+import com.example.rssparser.models.NewsModel
 
 @Dao
 interface NewsDao {
@@ -13,4 +13,7 @@ interface NewsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dataList: List<NewsModel>)
+
+    @Query("DELETE FROM newsmodel")
+    fun deleteAll()
 }

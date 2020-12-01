@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.R
 import com.example.rssparser.databinding.NewsItemBinding
-import com.example.rssparser.rss.models.NewsModel
+import com.example.rssparser.models.NewsModel
 
 class MainAdapter() : RecyclerView.Adapter<MainHolder>() {
 

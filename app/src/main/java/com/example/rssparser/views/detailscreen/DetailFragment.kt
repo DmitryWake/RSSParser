@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
-import com.example.rssparser.rss.models.NewsModel
+import com.example.rssparser.models.NewsModel
 
 
 class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragment_detail) {

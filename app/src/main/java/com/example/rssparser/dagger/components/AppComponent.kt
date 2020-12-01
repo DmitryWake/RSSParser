@@ -7,10 +7,9 @@ import com.example.rssparser.dagger.modules.DatabaseModule
 import com.example.rssparser.room.AppDatabase
 import com.example.rssparser.room.NewsRepository
 import com.example.rssparser.room.dao.NewsDao
-import com.example.rssparser.rss.NetworkService
 import com.example.rssparser.rss.RSSFeedApi
+import com.example.rssparser.views.mainscreen.interactor.NewsListLoader
 import dagger.Component
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Component(modules = [DatabaseModule::class, ApiModule::class, AppModule::class])
@@ -21,7 +20,6 @@ interface AppComponent {
     fun getNewsDao(): NewsDao
     fun getMainActivitySubcomponent(): MainActivitySubcomponent
     fun getContext(): Context
-    fun getRetrofit(): Retrofit
     fun getRSSFeedApi(): RSSFeedApi
-    fun getNetworkService(): NetworkService
+    fun getNewsListLoader(): NewsListLoader
 }

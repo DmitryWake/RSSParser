@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentNewslistBinding
-import com.example.rssparser.rss.models.NewsModel
+import com.example.rssparser.models.NewsModel
 import com.example.rssparser.views.mainscreen.adapter.MainAdapter
 import kotlinx.android.synthetic.main.fragment_newslist.*
 

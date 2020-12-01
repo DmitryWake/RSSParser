@@ -1,7 +1,7 @@
 package com.example.rssparser.rss
 
 import android.util.Log
-import com.example.rssparser.rss.models.NewsModel
+import com.example.rssparser.rss.models.NewsModelApi
 import com.example.rssparser.utilities.formatDescription
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
@@ -27,15 +27,15 @@ class RSSParser(private val url: URL) {
     // Успешная ли загрузка
     var isSuccessful: Boolean = true
 
-    fun readFeed(): List<NewsModel> {
+    fun readFeed(): List<NewsModelApi> {
 
-        val results = mutableListOf<NewsModel>()
+        val results = mutableListOf<NewsModelApi>()
 
         // Проверка: находимся ли мы в теге <item> ... </item>
         var isItems = false
 
         try {
-            var newsModel = NewsModel()
+            var newsModel = NewsModelApi()
 
             // Инициализация парсера
             val factory = XmlPullParserFactory.newInstance()
@@ -54,7 +54,7 @@ class RSSParser(private val url: URL) {
                         when (parser.name) {
                             // Если тег item
                             ITEM -> {
-                                newsModel = NewsModel()
+                                newsModel = NewsModelApi()
                             }
                             // Если тег guid и т.д.
                             GUID -> {

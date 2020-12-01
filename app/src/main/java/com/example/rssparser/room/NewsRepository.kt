@@ -1,9 +1,8 @@
 package com.example.rssparser.room
 
-import android.util.Log
 import com.example.rssparser.App
+import com.example.rssparser.models.NewsModel
 import com.example.rssparser.room.dao.NewsDao
-import com.example.rssparser.rss.models.NewsModel
 
 class NewsRepository {
     companion object {
@@ -20,22 +19,17 @@ class NewsRepository {
         newsDao = App.appComponent.getNewsDao()
     }
 
-    fun deleteFromDatabase(dataList: List<NewsModel>) {
+    fun deleteList(dataList: List<NewsModel>) {
         newsDao.delete(dataList)
     }
 
-    fun saveToDatabase(dataList: List<NewsModel>) {
+    fun deleteAll() {
+        newsDao.deleteAll()
+    }
+
+    fun saveList(dataList: List<NewsModel>) {
         newsDao.insert(dataList)
     }
 
-    fun loadFromDatabase(): List<NewsModel> {
-        return try {
-            newsDao.getAll()
-        } catch (t: Throwable) {
-            Log.e(TAG, "Loading error: ${t.message.toString()}")
-            listOf()
-        }
-    }
-
-    fun database() = dataBase
+    fun getAll(): List<NewsModel> = newsDao.getAll()
 }

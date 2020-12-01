@@ -1,7 +1,6 @@
 package com.example.rssparser.rss.models
 
 import androidx.room.Embedded
-import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
@@ -11,9 +10,8 @@ import java.io.Serializable
 // Обязательно нужен конструктор по умолчанию (пустой)
 // Энтити для Room
 // Serializable для bundle
-@Entity
 @Root(name = "item")
-data class NewsModel @JvmOverloads constructor(
+data class NewsModelApi @JvmOverloads constructor(
     @field:Element(name = "guid")
     var guid: String = "empty",
     @field:Element(name = "title")
