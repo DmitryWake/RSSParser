@@ -7,6 +7,7 @@ import com.squareup.picasso.Picasso
 
 // Загружаем фото по url с помощью DataBinding
 @BindingAdapter("app:url")
-fun loadImage(view: ImageView, url: String) {
-    Picasso.get().load(url).fit().placeholder(R.drawable.ic_base_image).into(view)
+fun loadImage(view: ImageView, url: String?) {
+    if (url != null && url.isNotEmpty())
+        Picasso.get().load(url).fit().placeholder(R.drawable.ic_base_image).into(view)
 }

@@ -1,4 +1,4 @@
-package com.example.rssparser.views.mainscreen
+package com.example.rssparser.views.newslistscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,9 @@ import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentNewslistBinding
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.views.mainscreen.adapter.MainAdapter
+import com.example.rssparser.utilities.replaceFragment
+import com.example.rssparser.views.detailscreen.DetailFragment
+import com.example.rssparser.views.newslistscreen.adapter.NewsListAdapter
 import kotlinx.android.synthetic.main.fragment_newslist.*
 
 
@@ -21,13 +23,13 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     companion object {
         // Храним позицию recycler view
-        var mRecyclerViewPosition: Int = 0
+        private var recyclerViewPosition: Int = 0
     }
 
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mLayoutManager: LinearLayoutManager
-    private val adapter = MainAdapter()
-    private lateinit var mViewModel: NewsListViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var layoutManager: LinearLayoutManager
+    private val newsListAdapter = NewsListAdapter()
+    private lateinit var viewModel: NewsListViewModel
 
     private lateinit var component: NewsListFragmentSubcomponent
 
@@ -35,16 +37,14 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         super.onCreate(savedInstanceState)
         component =
             (activity as MainActivity).component().getMainActivitySubcomponent().newsListComponent()
-        mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
+        viewModel = ViewModelProviders.of(this, component.viewModelFactory())
             .get(NewsListViewModel::class.java)
         // Вешаем слушателя, который будет вызывать нужные методы
-        lifecycle.addObserver(mViewModel)
+        lifecycle.addObserver(viewModel)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val binding = DataBindingUtil.inflate<FragmentNewslistBinding>(
             inflater,
@@ -52,17 +52,28 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
             container,
             false
         )
-        binding.viewModel = mViewModel
-        mViewModel.apply {
+
+        binding.viewModel = viewModel
+        viewModel.apply {
             newsListLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setItems)
-            isRefreshingLiveData.observe({ viewLifecycleOwner.lifecycle}, ::changeRefreshing)
+            isRefreshingLiveData.observe({ viewLifecycleOwner.lifecycle }, ::changeRefreshing)
+        }
+
+        // Инициализация RecyclerView и его компонентов
+        newsListAdapter.onItemClick = { url ->
+            replaceFragment(activity as MainActivity, DetailFragment(url), true)
+        }
+        recyclerView = binding.mainRecyclerView
+        recyclerView.apply {
+            adapter = newsListAdapter
+            isNestedScrollingEnabled = false
         }
 
         return binding.root
     }
 
     private fun setItems(items: List<NewsModel>) {
-        adapter.changeData(items)
+        newsListAdapter.changeData(items)
         if (items.isEmpty())
             empty_list_text.visibility = View.VISIBLE
         else
@@ -75,26 +86,19 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     override fun onStart() {
         super.onStart()
-        mLayoutManager = LinearLayoutManager(this.context)
-        initRecyclerView()
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        layoutManager = LinearLayoutManager(this.context)
+        recyclerView.layoutManager = layoutManager
     }
 
     override fun onResume() {
         super.onResume()
-        mRecyclerView.scrollToPosition(mRecyclerViewPosition)
+        recyclerView.scrollToPosition(recyclerViewPosition)
     }
 
     override fun onPause() {
         super.onPause()
         // Сохраняем позицию RecyclerView
-        mRecyclerViewPosition = mLayoutManager.findFirstVisibleItemPosition()
-    }
-
-    private fun initRecyclerView() {
-        mRecyclerView = main_recycler_view
-        mRecyclerView.isNestedScrollingEnabled = false
-        mRecyclerView.adapter = adapter
-        mRecyclerView.layoutManager = mLayoutManager
+        recyclerViewPosition = layoutManager.findFirstVisibleItemPosition()
     }
 }

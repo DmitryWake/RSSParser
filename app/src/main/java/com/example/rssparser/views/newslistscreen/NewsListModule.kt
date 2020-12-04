@@ -1,4 +1,4 @@
-package com.example.rssparser.views.mainscreen
+package com.example.rssparser.views.newslistscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

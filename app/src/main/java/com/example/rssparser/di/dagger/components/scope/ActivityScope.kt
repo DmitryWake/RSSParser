@@ -1,4 +1,4 @@
-package com.example.rssparser.dagger.components.scope
+package com.example.rssparser.di.dagger.components.scope
 
 import javax.inject.Scope
 

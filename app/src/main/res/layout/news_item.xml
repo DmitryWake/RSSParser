@@ -13,8 +13,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/news_item_container"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:onClick="@{() -> viewModel.onClick()}">
+        android:layout_height="144dp">
 
         <ImageView
             android:id="@+id/news_image"
@@ -24,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:url="@{viewModel.mNewsModel.imageUrl}"
-            android:contentDescription="@string/image_of_news"/>
+            android:contentDescription="@string/image_of_news" />
 
         <TextView
             android:id="@+id/news_title"

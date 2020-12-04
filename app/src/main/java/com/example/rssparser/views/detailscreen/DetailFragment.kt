@@ -14,20 +14,22 @@ import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
 import com.example.rssparser.models.NewsModel
+import com.example.rssparser.utilities.loadImage
+import kotlinx.android.synthetic.main.fragment_detail.*
 
 
-class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragment_detail) {
+class DetailFragment(private var link: String) : Fragment(R.layout.fragment_detail) {
 
     companion object {
         // Тег для вывода в консоль
-        const val NEWS_MODEL_TAG = "news_model"
+        const val NEWS_LINK_TAG = "news_link"
     }
 
     private lateinit var mViewModel: DetailViewModel
 
     private lateinit var component: DetailFragmentSubcomponent
 
-    constructor() : this(NewsModel())
+    constructor() : this("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
         binding.viewModel = mViewModel
         mViewModel.apply {
             linkLiveData.observe({ viewLifecycleOwner.lifecycle }, ::readNext)
+            newsModelLiveData.observe({ viewLifecycleOwner.lifecycle }, ::updateUI)
         }
         return binding.root
     }
@@ -59,6 +62,12 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             ContextCompat.startActivity(activity as MainActivity, intent, null)
         }
+    }
+
+    private fun updateUI(newsModel: NewsModel) {
+        detail_title.text = newsModel.title
+        detail_description.text = newsModel.description
+        loadImage(detail_image, newsModel.imageUrl)
     }
 
     override fun onStart() {
@@ -73,14 +82,14 @@ class DetailFragment(private var newsModel: NewsModel) : Fragment(R.layout.fragm
     private fun initViewModel(savedInstanceState: Bundle?) {
         mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
             .get(DetailViewModel::class.java)
-        if (savedInstanceState != null && savedInstanceState.containsKey(NEWS_MODEL_TAG))
-            newsModel = savedInstanceState.getSerializable(NEWS_MODEL_TAG) as NewsModel
-        mViewModel.initViewModel(newsModel)
+        if (savedInstanceState != null && savedInstanceState.containsKey(NEWS_LINK_TAG))
+            link = savedInstanceState.getString(NEWS_LINK_TAG)!!
+        mViewModel.initViewModel(link)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable(NEWS_MODEL_TAG, newsModel)
+        outState.putString(NEWS_LINK_TAG, link)
     }
 
 }

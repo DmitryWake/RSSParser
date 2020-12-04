@@ -1,9 +1,9 @@
-package com.example.rssparser.dagger.modules
+package com.example.rssparser.di.dagger.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.example.rssparser.room.AppDatabase
-import com.example.rssparser.room.NewsRepository
+import com.example.rssparser.database.room.AppDatabase
+import com.example.rssparser.database.room.NewsMapper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -13,7 +13,7 @@ class DatabaseModule() {
 
     @Provides
     @Singleton
-    fun provideRepository(): NewsRepository = NewsRepository()
+    fun provideNewsMapper() = NewsMapper()
 
     @Provides
     @Singleton

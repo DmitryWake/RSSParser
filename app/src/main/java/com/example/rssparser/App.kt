@@ -1,10 +1,10 @@
 package com.example.rssparser
 
 import android.app.Application
-import com.example.rssparser.dagger.components.AppComponent
-import com.example.rssparser.dagger.components.DaggerAppComponent
-import com.example.rssparser.dagger.modules.AppModule
-import com.example.rssparser.room.NewsRepository
+import com.example.rssparser.database.room.NewsRepository
+import com.example.rssparser.di.dagger.components.AppComponent
+import com.example.rssparser.di.dagger.components.DaggerAppComponent
+import com.example.rssparser.di.dagger.modules.AppModule
 
 
 class App : Application() {
@@ -13,7 +13,6 @@ class App : Application() {
         super.onCreate()
         initDagger()
         appNewsRepository = appComponent.getNewsRepository()
-        appNewsRepository.initDatabase()
     }
 
     private fun initDagger() {

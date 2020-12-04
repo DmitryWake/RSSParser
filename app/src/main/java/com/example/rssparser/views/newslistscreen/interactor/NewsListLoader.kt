@@ -1,7 +1,7 @@
-package com.example.rssparser.views.mainscreen.interactor
+package com.example.rssparser.views.newslistscreen.interactor
 
+import com.example.rssparser.database.room.repository.NewsRepositoryImpl
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.room.NewsRepository
 import com.example.rssparser.rss.RSSFeedApi
 import com.example.rssparser.rss.ResponseMapper
 import com.example.rssparser.rss.models.NewsModelApi
@@ -13,11 +13,11 @@ import javax.inject.Inject
  */
 class NewsListLoader @Inject constructor(
     private val rSSFeedApi: RSSFeedApi,
-    private val newsRepository: NewsRepository,
+    private val newsRepository: NewsRepositoryImpl,
     private val responseMapper: ResponseMapper
 ) {
 
-    fun getNewList(): Single<List<NewsModel>>? {
+    fun getNewList(): Single<List<NewsModel>> {
         return rSSFeedApi.getNews()
             .map { response -> mapToResult(response.channel.newsList) }
             .doOnSuccess { t -> saveNewsToDb(t) }

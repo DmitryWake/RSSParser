@@ -1,4 +1,4 @@
-package com.example.rssparser.dagger.modules
+package com.example.rssparser.di.dagger.modules
 
 import android.content.Context
 import dagger.Module

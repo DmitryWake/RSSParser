@@ -13,18 +13,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/news_item_container"
         android:layout_width="match_parent"
-        android:layout_height="174dp"
-        android:onClick="@{() -> viewModel.onClick()}">
+        android:layout_height="174dp">
 
         <ImageView
             android:id="@+id/news_image"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="@dimen/app_margin"
+            android:contentDescription="@string/image_of_news"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:url="@{viewModel.mNewsModel.imageUrl}"
-            android:contentDescription="@string/image_of_news"/>
+            app:url="@{viewModel.mNewsModel.imageUrl}" />
 
         <TextView
             android:id="@+id/news_title"
