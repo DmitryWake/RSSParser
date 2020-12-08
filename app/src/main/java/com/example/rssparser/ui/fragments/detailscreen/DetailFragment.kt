@@ -18,24 +18,25 @@ import com.example.rssparser.utilities.loadImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 
-class DetailFragment(private var link: String) : Fragment(R.layout.fragment_detail) {
-
-    companion object {
-        // Тег для вывода в консоль
-        const val NEWS_LINK_TAG = "news_link"
-    }
+class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private lateinit var mViewModel: DetailViewModel
-
     private lateinit var component: DetailFragmentSubcomponent
+    private var link: String = ""
 
-    constructor() : this("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component =
             (activity as MainActivity).component().getMainActivitySubcomponent().detailComponent()
-        initViewModel(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
+            .get(DetailViewModel::class.java)
+
+        if (arguments != null && arguments!!.containsKey(NEWS_LINK_TAG))
+            link = arguments!!.getString(NEWS_LINK_TAG)!!
+
+        mViewModel.initViewModel(link)
     }
 
     override fun onCreateView(
@@ -54,6 +55,13 @@ class DetailFragment(private var link: String) : Fragment(R.layout.fragment_deta
             linkLiveData.observe({ viewLifecycleOwner.lifecycle }, ::readNext)
             newsModelLiveData.observe({ viewLifecycleOwner.lifecycle }, ::updateUI)
         }
+
+        val activity = activity as MainActivity
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activity.mToolbar.setNavigationOnClickListener {
+            activity.supportFragmentManager.popBackStack()
+        }
+
         return binding.root
     }
 
@@ -70,26 +78,22 @@ class DetailFragment(private var link: String) : Fragment(R.layout.fragment_deta
         loadImage(detail_image, newsModel.imageUrl)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val activity = activity as MainActivity
-        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.mToolbar.setNavigationOnClickListener {
-            activity.supportFragmentManager.popBackStack()
-        }
-    }
-
-    private fun initViewModel(savedInstanceState: Bundle?) {
-        mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
-            .get(DetailViewModel::class.java)
-        if (savedInstanceState != null && savedInstanceState.containsKey(NEWS_LINK_TAG))
-            link = savedInstanceState.getString(NEWS_LINK_TAG)!!
-        mViewModel.initViewModel(link)
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(NEWS_LINK_TAG, link)
+    }
+
+    companion object {
+        // Тег для вывода в консоль
+        const val NEWS_LINK_TAG = "news_link"
+
+        fun newInstance(link: String): DetailFragment {
+            val fragment = DetailFragment()
+            val args = Bundle()
+            args.putString(NEWS_LINK_TAG, link)
+            fragment.arguments = args
+            return fragment
+        }
     }
 
 }

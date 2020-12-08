@@ -67,12 +67,12 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         recyclerView.apply {
             adapter = newsListAdapter.apply {
                 onItemClick = { url ->
-                    replaceFragment(activity as MainActivity, DetailFragment(url), true)
+                    replaceFragment(activity as MainActivity, DetailFragment.newInstance(url), true)
                 }
             }
             linearLayoutManager = LinearLayoutManager(context)
             layoutManager = linearLayoutManager
-            isNestedScrollingEnabled = false
+            isNestedScrollingEnabled = true
         }
 
         return binding.root
