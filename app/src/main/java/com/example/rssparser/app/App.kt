@@ -1,4 +1,4 @@
-package com.example.rssparser
+package com.example.rssparser.app
 
 import android.app.Application
 import com.example.rssparser.database.room.NewsRepository

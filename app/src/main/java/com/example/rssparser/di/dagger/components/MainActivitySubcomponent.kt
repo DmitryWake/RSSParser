@@ -1,8 +1,8 @@
 package com.example.rssparser.di.dagger.components
 
 import com.example.rssparser.di.dagger.components.scope.ActivityScope
-import com.example.rssparser.views.detailscreen.DetailFragmentSubcomponent
-import com.example.rssparser.views.newslistscreen.NewsListFragmentSubcomponent
+import com.example.rssparser.ui.fragments.detailscreen.DetailFragmentSubcomponent
+import com.example.rssparser.ui.fragments.newslistscreen.NewsListFragmentSubcomponent
 import dagger.Subcomponent
 
 /**

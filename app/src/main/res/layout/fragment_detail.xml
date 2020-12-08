@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.rssparser.views.detailscreen.DetailViewModel" />
+            type="com.example.rssparser.ui.fragments.detailscreen.DetailViewModel" />
 
     </data>
 
@@ -15,12 +15,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.detailscreen.DetailFragment">
+        tools:context=".ui.fragments.detailscreen.DetailFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".views.detailscreen.DetailFragment">
+            tools:context=".ui.fragments.detailscreen.DetailFragment">
 
             <TextView
                 android:id="@+id/detail_title"

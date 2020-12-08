@@ -1,12 +1,12 @@
-package com.example.rssparser.views.newslistscreen
+package com.example.rssparser.ui.fragments.newslistscreen
 
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.rssparser.App
+import com.example.rssparser.app.App
 import com.example.rssparser.database.room.NewsRepository
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.views.newslistscreen.interactor.NewsListLoader
+import com.example.rssparser.ui.fragments.newslistscreen.interactor.NewsListLoader
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver

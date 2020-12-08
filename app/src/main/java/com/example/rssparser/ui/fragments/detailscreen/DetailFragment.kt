@@ -1,4 +1,4 @@
-package com.example.rssparser.views.detailscreen
+package com.example.rssparser.ui.fragments.detailscreen
 
 import android.content.Intent
 import android.net.Uri
@@ -10,10 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.example.rssparser.MainActivity
 import com.example.rssparser.R
 import com.example.rssparser.databinding.FragmentDetailBinding
 import com.example.rssparser.models.NewsModel
+import com.example.rssparser.ui.activities.MainActivity
 import com.example.rssparser.utilities.loadImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 

@@ -1,4 +1,4 @@
-package com.example.rssparser.views.newslistscreen.adapter
+package com.example.rssparser.ui.fragments.newslistscreen.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

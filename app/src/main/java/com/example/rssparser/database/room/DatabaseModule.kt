@@ -1,9 +1,7 @@
-package com.example.rssparser.di.dagger.modules
+package com.example.rssparser.database.room
 
 import android.content.Context
 import androidx.room.Room
-import com.example.rssparser.database.room.AppDatabase
-import com.example.rssparser.database.room.NewsMapper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -1,4 +1,4 @@
-package com.example.rssparser.views.newslistscreen.interactor
+package com.example.rssparser.ui.fragments.newslistscreen.interactor
 
 import com.example.rssparser.database.room.repository.NewsRepositoryImpl
 import com.example.rssparser.models.NewsModel

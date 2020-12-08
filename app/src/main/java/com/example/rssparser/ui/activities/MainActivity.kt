@@ -1,11 +1,12 @@
-package com.example.rssparser
+package com.example.rssparser.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.rssparser.app.App
 import com.example.rssparser.databinding.ActivityMainBinding
+import com.example.rssparser.ui.fragments.newslistscreen.NewsListFragment
 import com.example.rssparser.utilities.replaceFragment
-import com.example.rssparser.views.newslistscreen.NewsListFragment
 
 class MainActivity : AppCompatActivity() {
 

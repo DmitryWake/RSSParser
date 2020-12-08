@@ -1,6 +1,5 @@
-package com.example.rssparser.di.dagger.modules
+package com.example.rssparser.database.room
 
-import com.example.rssparser.database.room.NewsRepository
 import com.example.rssparser.database.room.repository.NewsRepositoryImpl
 import dagger.Binds
 import dagger.Module

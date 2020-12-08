@@ -1,8 +1,8 @@
 package com.example.rssparser.utilities
 
 import androidx.fragment.app.Fragment
-import com.example.rssparser.MainActivity
 import com.example.rssparser.R
+import com.example.rssparser.ui.activities.MainActivity
 
 fun replaceFragment(context: MainActivity, fragment: Fragment, addToBackStack: Boolean) {
     if (addToBackStack) {

@@ -1,9 +1,9 @@
-package com.example.rssparser.views.detailscreen
+package com.example.rssparser.ui.fragments.detailscreen
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.rssparser.App
+import com.example.rssparser.app.App
 import com.example.rssparser.database.room.NewsRepository
 import com.example.rssparser.models.NewsModel
 import io.reactivex.Observable
