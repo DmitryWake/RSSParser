@@ -24,6 +24,10 @@ class NewsListLoader @Inject constructor(
             .flatMap { Single.fromCallable { loadNewsFromDb() } }
     }
 
+    fun getNewsListFromDb(): Single<List<NewsModel>> {
+        return Single.fromCallable { loadNewsFromDb() }
+    }
+
     private fun loadNewsFromDb(): List<NewsModel> {
         return newsRepository.getAll()
     }

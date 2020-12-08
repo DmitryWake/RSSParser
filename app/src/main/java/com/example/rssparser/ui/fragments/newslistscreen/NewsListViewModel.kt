@@ -3,13 +3,11 @@ package com.example.rssparser.ui.fragments.newslistscreen
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.rssparser.app.App
-import com.example.rssparser.database.room.NewsRepository
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.fragments.newslistscreen.interactor.NewsListLoader
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -18,6 +16,9 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
 
     val newsListLiveData = MutableLiveData<List<NewsModel>>()
     val isRefreshingLiveData = MutableLiveData<Boolean>()
+
+    private var loadDisposable: Disposable = CompositeDisposable()
+    private var loadFromDbDisposable: Disposable = CompositeDisposable()
 
     companion object {
         // Тег для вывода в Logcat
@@ -36,57 +37,46 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
         // Сначала загружаем ленту из памяти
         // Вдруг у пользователя очень медленный интернет
         // Или вообще нет интернета
-        loadFeed()
+        loadNewsFromDb()
         // Скачиваем ленту с сайта
-        downloadFeed()
+        loadNews()
     }
-
-    // Observable для загрузку из локальной бд
-    private fun createLoadObservable(): Observable<NewsRepository> =
-        Observable.create { emitter ->
-            emitter.onNext(App.appNewsRepository)
-        }
 
     @SuppressLint("CheckResult")
-    private fun loadFeed() {
-        val loadObservable = createLoadObservable()
-        loadObservable
-            // Observable создан в UI потоке
-            .subscribeOn(AndroidSchedulers.mainThread())
-            // Выполняем в IO потоке
-            .observeOn(Schedulers.io())
-            // Преобразовываем данные
-            .map { it.getAll() }
-            // Выполняем в UI потоке
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.isNotEmpty() || newsListLiveData.value.isNullOrEmpty()) {
-                    newsListLiveData.value = it
-                }
-            }
+    private fun loadNewsFromDb() {
+        loadFromDbDisposable.dispose()
+        loadFromDbDisposable = newsLoader.getNewsListFromDb().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ t ->
+                if (t.isNotEmpty())
+                    newsListLiveData.value = t
+            }, { e ->
+                Log.e(TAG, e.message.toString())
+            })
     }
 
-    private fun downloadFeed() {
-        isRefreshingLiveData.value = true
-        newsLoader.getNewList()
+    private fun loadNews() {
+        loadDisposable.dispose()
+        loadDisposable = newsLoader.getNewList()
             .subscribeOn(Schedulers.io())
+            .doOnSubscribe { isRefreshingLiveData.value = true }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : DisposableSingleObserver<List<NewsModel>>() {
-                override fun onSuccess(t: List<NewsModel>) {
-                    if (t.isNotEmpty())
-                        newsListLiveData.value = t
-                    isRefreshingLiveData.value = false
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.e(TAG, e.message.toString())
-                    isRefreshingLiveData.value = false
-                }
+            .doAfterTerminate { isRefreshingLiveData.value = false }
+            .subscribe({ t ->
+                if (t.isNotEmpty())
+                    newsListLiveData.value = t
+            }, { e ->
+                Log.e(TAG, e.message.toString())
             })
     }
 
     fun onRefresh() {
-        downloadFeed()
+        loadNews()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        loadDisposable.dispose()
+        loadFromDbDisposable.dispose()
     }
 
 }
