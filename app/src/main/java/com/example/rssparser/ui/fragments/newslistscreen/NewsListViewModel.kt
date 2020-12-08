@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.fragments.newslistscreen.interactor.NewsListLoader
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -18,8 +17,8 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
     val isEmptyLiveData = MutableLiveData<Boolean>()
     val isRefreshingLiveData = MutableLiveData<Boolean>()
 
-    private var loadDisposable: Disposable = CompositeDisposable()
-    private var loadFromDbDisposable: Disposable = CompositeDisposable()
+    private var loadDisposable: Disposable? = null
+    private var loadFromDbDisposable: Disposable? = null
 
     companion object {
         // Тег для вывода в Logcat
@@ -44,7 +43,7 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
 
     @SuppressLint("CheckResult")
     private fun loadNewsFromDb() {
-        loadFromDbDisposable.dispose()
+        loadFromDbDisposable?.dispose()
         loadFromDbDisposable = newsLoader.getNewsListFromDb().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({ t ->
                 if (t.isNotEmpty())
@@ -57,7 +56,7 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
     }
 
     private fun loadNews() {
-        loadDisposable.dispose()
+        loadDisposable?.dispose()
         loadDisposable = newsLoader.getNewList()
             .subscribeOn(Schedulers.io())
             .doOnSubscribe { isRefreshingLiveData.value = true }
@@ -79,8 +78,8 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        loadDisposable.dispose()
-        loadFromDbDisposable.dispose()
+        loadDisposable?.dispose()
+        loadFromDbDisposable?.dispose()
     }
 
 }

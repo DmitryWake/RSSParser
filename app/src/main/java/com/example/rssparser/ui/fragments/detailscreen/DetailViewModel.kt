@@ -8,7 +8,6 @@ import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.fragments.detailscreen.interactor.NewsLoader
 import com.example.rssparser.ui.fragments.newslistscreen.NewsListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -18,11 +17,11 @@ class DetailViewModel @Inject constructor(private val newsLoader: NewsLoader) : 
     val linkLiveData = MutableLiveData<String>()
     val newsModelLiveData = MutableLiveData<NewsModel>()
 
-    private var newsLoadDisposable: Disposable = CompositeDisposable()
+    private var newsLoadDisposable: Disposable? = null
 
     @SuppressLint("CheckResult")
     fun initViewModel(link: String) {
-        newsLoadDisposable.dispose()
+        newsLoadDisposable?.dispose()
         newsLoadDisposable = newsLoader.getNews(link).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({ t ->
                 newsModelLiveData.value = t
