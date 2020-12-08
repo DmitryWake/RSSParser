@@ -31,7 +31,6 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initViewModel() {
         initData()
-        println(newsListLiveData.value)
     }
 
     private fun initData() {

@@ -21,4 +21,5 @@ class DatabaseModule() {
     @Provides
     @Singleton
     fun providesNewsDao(database: AppDatabase) = database.newsDao()
+
 }

@@ -1,10 +1,8 @@
 package com.example.rssparser.di.dagger.modules
 
-import com.example.rssparser.database.room.repository.NewsRepositoryImpl
 import com.example.rssparser.rss.NetworkService
 import com.example.rssparser.rss.RSSFeedApi
 import com.example.rssparser.rss.ResponseMapper
-import com.example.rssparser.ui.fragments.newslistscreen.interactor.NewsListLoader
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -33,11 +31,4 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideResponseMapper(): ResponseMapper = ResponseMapper()
-
-    @Provides
-    fun providesNewsListLoader(
-        rssFeedApi: RSSFeedApi,
-        newsRepository: NewsRepositoryImpl,
-        responseMapper: ResponseMapper
-    ): NewsListLoader = NewsListLoader(rssFeedApi, newsRepository, responseMapper)
 }

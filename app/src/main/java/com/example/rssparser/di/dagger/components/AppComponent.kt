@@ -1,7 +1,6 @@
 package com.example.rssparser.di.dagger.components
 
 import com.example.rssparser.database.room.DatabaseModule
-import com.example.rssparser.database.room.NewsRepository
 import com.example.rssparser.database.room.RepositoryModule
 import com.example.rssparser.di.dagger.modules.ApiModule
 import com.example.rssparser.di.dagger.modules.AppModule
@@ -16,6 +15,5 @@ import javax.inject.Singleton
 )
 @Singleton
 interface AppComponent {
-    fun getNewsRepository(): NewsRepository
     fun getMainActivitySubcomponent(): MainActivitySubcomponent
 }
