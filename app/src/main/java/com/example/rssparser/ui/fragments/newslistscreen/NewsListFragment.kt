@@ -1,5 +1,6 @@
 package com.example.rssparser.ui.fragments.newslistscreen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.R
@@ -43,6 +45,7 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         lifecycle.addObserver(viewModel)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -65,14 +68,21 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         // Инициализация RecyclerView и его компонентов
         recyclerView = binding.mainRecyclerView
         recyclerView.apply {
+
             adapter = newsListAdapter.apply {
                 onItemClick = { url ->
                     replaceFragment(activity as MainActivity, DetailFragment.newInstance(url), true)
                 }
             }
+
             linearLayoutManager = LinearLayoutManager(context)
             layoutManager = linearLayoutManager
-            isNestedScrollingEnabled = true
+
+            val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
+            dividerItemDecoration.setDrawable(
+                resources.getDrawable(R.drawable.divider_drawable)
+            )
+            addItemDecoration(dividerItemDecoration)
         }
 
         return binding.root
