@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
-    private lateinit var mViewModel: DetailViewModel
+    private lateinit var viewModel: DetailViewModel
     private lateinit var component: DetailFragmentSubcomponent
     private var link: String = ""
 
@@ -30,13 +30,15 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         component =
             (activity as MainActivity).component().getMainActivitySubcomponent().detailComponent()
 
-        mViewModel = ViewModelProviders.of(this, component.viewModelFactory())
+        viewModel = ViewModelProviders.of(this, component.viewModelFactory())
             .get(DetailViewModel::class.java)
 
         if (arguments != null && arguments!!.containsKey(NEWS_LINK_TAG))
             link = arguments!!.getString(NEWS_LINK_TAG)!!
 
-        mViewModel.initViewModel(link)
+        viewModel.initViewModel(link)
+
+        lifecycle.addObserver(viewModel)
     }
 
     override fun onCreateView(
@@ -50,8 +52,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             container,
             false
         )
-        binding.viewModel = mViewModel
-        mViewModel.apply {
+        binding.viewModel = viewModel
+        viewModel.apply {
             linkLiveData.observe({ viewLifecycleOwner.lifecycle }, ::readNext)
             newsModelLiveData.observe({ viewLifecycleOwner.lifecycle }, ::updateUI)
         }
