@@ -27,7 +27,7 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
     }
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var linearLayoutManager: LinearLayoutManager
     private val newsListAdapter = NewsListAdapter()
     private lateinit var viewModel: NewsListViewModel
 
@@ -57,15 +57,21 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
         viewModel.apply {
             newsListLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setItems)
             isRefreshingLiveData.observe({ viewLifecycleOwner.lifecycle }, ::changeRefreshing)
+            isEmptyLiveData.observe({ viewLifecycleOwner.lifecycle }, ::changeListVisibility)
         }
 
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         // Инициализация RecyclerView и его компонентов
-        newsListAdapter.onItemClick = { url ->
-            replaceFragment(activity as MainActivity, DetailFragment(url), true)
-        }
         recyclerView = binding.mainRecyclerView
         recyclerView.apply {
-            adapter = newsListAdapter
+            adapter = newsListAdapter.apply {
+                onItemClick = { url ->
+                    replaceFragment(activity as MainActivity, DetailFragment(url), true)
+                }
+            }
+            linearLayoutManager = LinearLayoutManager(context)
+            layoutManager = linearLayoutManager
             isNestedScrollingEnabled = false
         }
 
@@ -74,21 +80,20 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     private fun setItems(items: List<NewsModel>) {
         newsListAdapter.changeData(items)
-        if (items.isEmpty())
+    }
+
+    private fun changeListVisibility(isEmpty: Boolean) {
+        if (isEmpty) {
             empty_list_text.visibility = View.VISIBLE
-        else
+            recyclerView.visibility = View.GONE
+        } else {
             empty_list_text.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+        }
     }
 
     private fun changeRefreshing(isRefreshing: Boolean) {
         swipe_refresh_layout.isRefreshing = isRefreshing
-    }
-
-    override fun onStart() {
-        super.onStart()
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        layoutManager = LinearLayoutManager(this.context)
-        recyclerView.layoutManager = layoutManager
     }
 
     override fun onResume() {
@@ -99,6 +104,6 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
     override fun onPause() {
         super.onPause()
         // Сохраняем позицию RecyclerView
-        recyclerViewPosition = layoutManager.findFirstVisibleItemPosition()
+        recyclerViewPosition = linearLayoutManager.findFirstVisibleItemPosition()
     }
 }

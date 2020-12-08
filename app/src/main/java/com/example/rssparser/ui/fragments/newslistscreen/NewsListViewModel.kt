@@ -15,6 +15,7 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
     LifecycleObserver {
 
     val newsListLiveData = MutableLiveData<List<NewsModel>>()
+    val isEmptyLiveData = MutableLiveData<Boolean>()
     val isRefreshingLiveData = MutableLiveData<Boolean>()
 
     private var loadDisposable: Disposable = CompositeDisposable()
@@ -49,8 +50,10 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
             .observeOn(AndroidSchedulers.mainThread()).subscribe({ t ->
                 if (t.isNotEmpty())
                     newsListLiveData.value = t
+                isEmptyLiveData.value = t.isEmpty()
             }, { e ->
                 Log.e(TAG, e.message.toString())
+                isEmptyLiveData.value = true
             })
     }
 
@@ -64,8 +67,10 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
             .subscribe({ t ->
                 if (t.isNotEmpty())
                     newsListLiveData.value = t
+                isEmptyLiveData.value = t.isEmpty()
             }, { e ->
                 Log.e(TAG, e.message.toString())
+                isEmptyLiveData.value = true
             })
     }
 
