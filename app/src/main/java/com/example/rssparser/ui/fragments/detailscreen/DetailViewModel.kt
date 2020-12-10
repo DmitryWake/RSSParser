@@ -33,7 +33,7 @@ class DetailViewModel @Inject constructor(private val newsLoader: NewsLoader) : 
     }
 
     // Переход в браузер по ссылке
-    fun onClickReadNextButton() {
+    fun onClickGoToBrowser() {
         linkLiveData.value = newsModelLiveData.value?.link
     }
 

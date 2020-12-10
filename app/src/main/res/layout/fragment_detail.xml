@@ -23,7 +23,7 @@
             tools:context=".ui.fragments.detailscreen.DetailFragment">
 
             <TextView
-                android:id="@+id/detail_title"
+                android:id="@+id/fragment_detail_tv_title"
                 style="@style/title_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,20 +35,20 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/detail_image"
+                android:id="@+id/fragment_detail_iv_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/app_margin"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_of_news"
                 android:scaleType="fitCenter"
-                app:url="@{viewModel.newsModelLiveData.imageUrl}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detail_title"
-                android:contentDescription="@string/image_of_news" />
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_tv_title"
+                app:url="@{viewModel.newsModelLiveData.imageUrl}" />
 
             <TextView
-                android:id="@+id/detail_description"
+                android:id="@+id/fragment_detail_tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/app_margin"
@@ -56,21 +56,21 @@
                 android:textSize="@dimen/large_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detail_image" />
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_iv_image" />
 
             <Button
-                android:id="@+id/button_read_next"
+                android:id="@+id/fragment_detail_b_go_to_browser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/app_margin"
-                android:onClick="@{() -> viewModel.onClickReadNextButton()}"
+                android:onClick="@{() -> viewModel.onClickGoToBrowser()}"
                 android:text="@string/read_next"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_text_size"
                 app:backgroundTint="@color/cardview_dark_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detail_description" />
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_tv_description" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

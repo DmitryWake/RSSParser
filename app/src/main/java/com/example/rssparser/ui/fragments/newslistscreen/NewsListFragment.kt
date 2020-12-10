@@ -94,16 +94,16 @@ class NewsListFragment : Fragment(R.layout.fragment_newslist) {
 
     private fun changeListVisibility(isEmpty: Boolean) {
         if (isEmpty) {
-            empty_list_text.visibility = View.VISIBLE
+            fragment_newslist_tv_empty_list.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
         } else {
-            empty_list_text.visibility = View.GONE
+            fragment_newslist_tv_empty_list.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
     }
 
     private fun changeRefreshing(isRefreshing: Boolean) {
-        swipe_refresh_layout.isRefreshing = isRefreshing
+        fragment_newslist_swipe_refresh_layout.isRefreshing = isRefreshing
     }
 
     override fun onResume() {

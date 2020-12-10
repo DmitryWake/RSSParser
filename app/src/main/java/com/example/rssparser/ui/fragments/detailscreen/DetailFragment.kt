@@ -76,9 +76,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun updateUI(newsModel: NewsModel) {
-        detail_title.text = newsModel.title
-        detail_description.text = newsModel.description
-        loadImage(detail_image, newsModel.imageUrl)
+        fragment_detail_tv_title.text = newsModel.title
+        fragment_detail_tv_description.text = newsModel.description
+        loadImage(fragment_detail_iv_image, newsModel.imageUrl)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

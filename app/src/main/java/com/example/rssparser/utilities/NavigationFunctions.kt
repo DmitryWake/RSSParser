@@ -7,9 +7,10 @@ import com.example.rssparser.ui.activities.MainActivity
 fun replaceFragment(context: MainActivity, fragment: Fragment, addToBackStack: Boolean) {
     if (addToBackStack) {
         context.supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+            .replace(R.id.activity_main_cl_fragment_container, fragment).addToBackStack(null)
+            .commit()
     } else {
         context.supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment).commit()
+            .replace(R.id.activity_main_cl_fragment_container, fragment).commit()
     }
 }

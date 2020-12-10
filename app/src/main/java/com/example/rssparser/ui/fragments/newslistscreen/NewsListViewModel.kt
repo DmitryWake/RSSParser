@@ -48,8 +48,9 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ t ->
-                if (t.isNotEmpty())
+                if (t.isNotEmpty()) {
                     newsListLiveData.value = t
+                }
                 isEmptyLiveData.value = t.isEmpty()
             }, { e ->
                 Log.e(TAG, e.message.toString())
@@ -65,8 +66,9 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate { isRefreshingLiveData.value = false }
             .subscribe({ t ->
-                if (t.isNotEmpty())
+                if (t.isNotEmpty()) {
                     newsListLiveData.value = t
+                }
                 isEmptyLiveData.value = t.isEmpty()
             }, { e ->
                 Log.e(TAG, e.message.toString())

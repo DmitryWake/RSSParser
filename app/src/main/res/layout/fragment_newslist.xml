@@ -14,7 +14,7 @@
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+        android:id="@+id/fragment_newslist_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:onRefreshListener="@{() -> viewModel.onRefresh()}">
@@ -25,7 +25,7 @@
             tools:context=".ui.fragments.newslistscreen.NewsListFragment">
 
             <TextView
-                android:id="@+id/empty_list_text"
+                android:id="@+id/fragment_newslist_tv_empty_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/app_margin"
@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_recycler_view"
+                android:id="@+id/fragment_newslist_rv_newslist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
