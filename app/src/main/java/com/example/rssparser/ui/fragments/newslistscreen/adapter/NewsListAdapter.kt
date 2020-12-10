@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rssparser.R
 import com.example.rssparser.databinding.NewsItemBinding
 import com.example.rssparser.models.NewsModel
-import com.example.rssparser.viewmodels.NewsItemViewModel
 
-class NewsListAdapter() : RecyclerView.Adapter<NewsListAdapter.NewsListHolder>() {
+class NewsListAdapter : RecyclerView.Adapter<NewsListAdapter.NewsListHolder>() {
 
     private var dataList: List<NewsModel> = listOf()
     lateinit var onItemClick: (String) -> Unit
@@ -39,15 +38,17 @@ class NewsListAdapter() : RecyclerView.Adapter<NewsListAdapter.NewsListHolder>()
     inner class NewsListHolder(private val binding: NewsItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        lateinit var mViewModel: NewsItemViewModel
+        val viewModel: NewsItemViewModel = NewsItemViewModel()
+
+        init {
+            binding.newsItemContainer.setOnClickListener {
+                onItemClick(dataList[adapterPosition].link)
+            }
+        }
 
         fun bind(newsModel: NewsModel) {
-            mViewModel = NewsItemViewModel()
-            mViewModel.initViewModel(newsModel)
-            binding.viewModel = mViewModel
-            binding.newsItemContainer.setOnClickListener {
-                onItemClick(newsModel.link)
-            }
+            viewModel.initViewModel(newsModel)
+            binding.viewModel = viewModel
         }
     }
 }

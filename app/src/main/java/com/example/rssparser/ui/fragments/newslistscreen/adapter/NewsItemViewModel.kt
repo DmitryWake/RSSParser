@@ -1,4 +1,4 @@
-package com.example.rssparser.viewmodels
+package com.example.rssparser.ui.fragments.newslistscreen.adapter
 
 import androidx.lifecycle.ViewModel
 import com.example.rssparser.models.NewsModel

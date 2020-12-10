@@ -22,8 +22,10 @@ class DetailViewModel @Inject constructor(private val newsLoader: NewsLoader) : 
     @SuppressLint("CheckResult")
     fun initViewModel(link: String) {
         newsLoadDisposable?.dispose()
-        newsLoadDisposable = newsLoader.getNews(link).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({ t ->
+        newsLoadDisposable = newsLoader.getNews(link)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ t ->
                 newsModelLiveData.value = t
             }, { e ->
                 Log.e(NewsListViewModel.TAG, e.message.toString())

@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.rssparser.viewmodels.NewsItemViewModel" />
+            type="com.example.rssparser.ui.fragments.newslistscreen.adapter.NewsItemViewModel" />
 
     </data>
 

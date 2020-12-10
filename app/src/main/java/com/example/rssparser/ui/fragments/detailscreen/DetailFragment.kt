@@ -54,20 +54,21 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         )
         binding.viewModel = viewModel
         viewModel.apply {
-            linkLiveData.observe({ viewLifecycleOwner.lifecycle }, ::readNext)
+            linkLiveData.observe({ viewLifecycleOwner.lifecycle }, ::goToBrowser)
             newsModelLiveData.observe({ viewLifecycleOwner.lifecycle }, ::updateUI)
         }
 
-        val activity = activity as MainActivity
-        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.mToolbar.setNavigationOnClickListener {
-            activity.supportFragmentManager.popBackStack()
+        (activity as MainActivity).apply {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mToolbar.setNavigationOnClickListener {
+                supportFragmentManager.popBackStack()
+            }
         }
 
         return binding.root
     }
 
-    private fun readNext(link: String?) {
+    private fun goToBrowser(link: String?) {
         if (!link.isNullOrEmpty()) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             ContextCompat.startActivity(activity as MainActivity, intent, null)
@@ -89,12 +90,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         // Тег для вывода в консоль
         const val NEWS_LINK_TAG = "news_link"
 
-        fun newInstance(link: String): DetailFragment {
-            val fragment = DetailFragment()
-            val args = Bundle()
-            args.putString(NEWS_LINK_TAG, link)
-            fragment.arguments = args
-            return fragment
+        fun newInstance(link: String) = DetailFragment().apply {
+            arguments = Bundle().apply { putString(NEWS_LINK_TAG, link) }
         }
     }
 

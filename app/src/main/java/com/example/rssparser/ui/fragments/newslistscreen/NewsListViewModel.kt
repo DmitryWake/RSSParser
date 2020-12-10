@@ -44,8 +44,10 @@ class NewsListViewModel @Inject constructor(private val newsLoader: NewsListLoad
     @SuppressLint("CheckResult")
     private fun loadNewsFromDb() {
         loadFromDbDisposable?.dispose()
-        loadFromDbDisposable = newsLoader.getNewsListFromDb().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({ t ->
+        loadFromDbDisposable = newsLoader.getNewsListFromDb()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ t ->
                 if (t.isNotEmpty())
                     newsListLiveData.value = t
                 isEmptyLiveData.value = t.isEmpty()
