@@ -1,7 +1,7 @@
 package com.example.rssparser.database.room.repository
 
+import com.example.rssparser.database.repository.NewsRepository
 import com.example.rssparser.database.room.NewsMapper
-import com.example.rssparser.database.room.NewsRepository
 import com.example.rssparser.database.room.dao.NewsDao
 import com.example.rssparser.models.NewsModel
 import javax.inject.Inject
