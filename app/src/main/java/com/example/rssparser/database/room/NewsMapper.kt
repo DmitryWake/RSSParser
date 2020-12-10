@@ -30,10 +30,10 @@ class NewsMapper {
         val link = dto0.link
         val imageUrl = dto0.imageUrl
         return NewsEntity(
+            link = link,
             title = title,
             description = description,
-            imageUrl = imageUrl,
-            link = link
+            imageUrl = imageUrl
         )
     }
 
