@@ -1,14 +1,11 @@
 package com.example.rssparser.ui.fragments.detailscreen
 
-import androidx.lifecycle.ViewModelProvider
 import com.example.rssparser.di.dagger.components.scope.FragmentScope
+import com.example.rssparser.ui.fragments.detailscreen.presenter.DetailPresenter
 import dagger.Subcomponent
 
-/**
- * @author Ovchinnikov Roman
- */
 @FragmentScope
-@Subcomponent(modules = [DetailModule::class])
+@Subcomponent
 interface DetailFragmentSubcomponent {
-    fun viewModelFactory(): ViewModelProvider.Factory
+    fun getDetailPresenter(): DetailPresenter
 }

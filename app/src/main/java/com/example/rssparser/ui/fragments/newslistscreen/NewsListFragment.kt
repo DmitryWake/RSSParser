@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,16 +13,15 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.rssparser.R
-import com.example.rssparser.app.App
-import com.example.rssparser.databinding.FragmentNewslistBinding
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.activities.MainActivity
 import com.example.rssparser.ui.fragments.detailscreen.DetailFragment
 import com.example.rssparser.ui.fragments.newslistscreen.adapter.NewsListAdapter
-import com.example.rssparser.ui.fragments.newslistscreen.presenters.NewsListPresenter
-import com.example.rssparser.ui.fragments.newslistscreen.views.NewsListView
+import com.example.rssparser.ui.fragments.newslistscreen.presenter.NewsListPresenter
+import com.example.rssparser.ui.fragments.newslistscreen.view.NewsListView
 import com.example.rssparser.utilities.replaceFragment
 import kotlinx.android.synthetic.main.fragment_newslist.*
+import kotlinx.android.synthetic.main.fragment_newslist.view.*
 
 
 class NewsListFragment : MvpAppCompatFragment(), NewsListView {
@@ -42,14 +40,17 @@ class NewsListFragment : MvpAppCompatFragment(), NewsListView {
     lateinit var newsListPresenter: NewsListPresenter
 
     @ProvidePresenter
-    fun provideNewsListPresenter(): NewsListPresenter = App.appComponent.getNewsListPresenter()
+    fun provideNewsListPresenter(): NewsListPresenter {
+        val component =
+            (activity as MainActivity).component().getMainActivitySubcomponent().newsListComponent()
+        return component.getNewsListPresenter()
+    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val binding = DataBindingUtil.inflate<FragmentNewslistBinding>(
-            inflater,
+        val view = inflater.inflate(
             R.layout.fragment_newslist,
             container,
             false
@@ -58,7 +59,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsListView {
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         // Инициализация RecyclerView и его компонентов
-        recyclerView = binding.fragmentNewslistRvNewslist
+        recyclerView = view.fragment_newslist_rv_newslist
         recyclerView.apply {
 
             adapter = newsListAdapter.apply {
@@ -77,7 +78,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsListView {
             addItemDecoration(dividerItemDecoration)
         }
 
-        return binding.root
+        return view
     }
 
     override fun onStart() {
