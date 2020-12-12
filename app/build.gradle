@@ -72,7 +72,7 @@ dependencies {
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     // XML converter
-    implementation ('com.squareup.retrofit2:converter-simplexml:2.5.0', {
+    implementation('com.squareup.retrofit2:converter-simplexml:2.5.0', {
         exclude module: 'stax'
         exclude module: 'stax-api'
     })
@@ -88,5 +88,11 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.20"
 
+    // Multidex
     implementation 'com.android.support:multidex:1.0.3'
+
+    // Moxy
+    implementation 'tech.schoolhelper:moxy-x:1.7.0'
+    implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
+    kapt 'tech.schoolhelper:moxy-x-compiler:1.7.0'
 }

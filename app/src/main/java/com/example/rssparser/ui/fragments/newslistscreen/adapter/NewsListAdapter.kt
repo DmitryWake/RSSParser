@@ -41,7 +41,7 @@ class NewsListAdapter : RecyclerView.Adapter<NewsListAdapter.NewsListHolder>() {
         val viewModel: NewsItemViewModel = NewsItemViewModel()
 
         init {
-            binding.newsItemContainer.setOnClickListener {
+            binding.newsItemHolderClContainer.setOnClickListener {
                 onItemClick(dataList[adapterPosition].link)
             }
         }

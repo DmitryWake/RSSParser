@@ -1,11 +1,9 @@
 package com.example.rssparser.ui.fragments.detailscreen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.fragments.detailscreen.interactor.NewsLoader
-import com.example.rssparser.ui.fragments.newslistscreen.NewsListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -28,7 +26,6 @@ class DetailViewModel @Inject constructor(private val newsLoader: NewsLoader) : 
             .subscribe({ t ->
                 newsModelLiveData.value = t
             }, { e ->
-                Log.e(NewsListViewModel.TAG, e.message.toString())
             })
     }
 
