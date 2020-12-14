@@ -1,13 +1,13 @@
 package com.example.rssparser.ui.fragments.newslistscreen.presenter
 
 import android.annotation.SuppressLint
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.rssparser.ui.fragments.newslistscreen.interactor.NewsListLoader
 import com.example.rssparser.ui.fragments.newslistscreen.view.NewsListView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState

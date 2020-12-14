@@ -9,9 +9,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.rssparser.R
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.activities.MainActivity
@@ -22,6 +19,9 @@ import com.example.rssparser.ui.fragments.newslistscreen.view.NewsListView
 import com.example.rssparser.utilities.replaceFragment
 import kotlinx.android.synthetic.main.fragment_newslist.*
 import kotlinx.android.synthetic.main.fragment_newslist.view.*
+import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 
 class NewsListFragment : MvpAppCompatFragment(), NewsListView {

@@ -1,12 +1,12 @@
 package com.example.rssparser.ui.fragments.detailscreen.presenter
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.rssparser.ui.fragments.detailscreen.interactor.NewsLoader
 import com.example.rssparser.ui.fragments.detailscreen.view.DetailView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState

@@ -8,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.rssparser.R
 import com.example.rssparser.models.NewsModel
 import com.example.rssparser.ui.activities.MainActivity
@@ -19,6 +16,9 @@ import com.example.rssparser.ui.fragments.detailscreen.view.DetailView
 import com.example.rssparser.utilities.loadImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 
 class DetailFragment : MvpAppCompatFragment(), DetailView {

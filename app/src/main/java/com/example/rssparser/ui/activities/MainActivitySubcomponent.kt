@@ -1,4 +1,4 @@
-package com.example.rssparser.di.dagger.components
+package com.example.rssparser.ui.activities
 
 import com.example.rssparser.di.dagger.components.scope.ActivityScope
 import com.example.rssparser.ui.fragments.detailscreen.DetailFragmentSubcomponent

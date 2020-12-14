@@ -4,6 +4,7 @@ import com.example.rssparser.database.room.DatabaseModule
 import com.example.rssparser.database.room.RepositoryModule
 import com.example.rssparser.di.dagger.modules.ApiModule
 import com.example.rssparser.di.dagger.modules.AppModule
+import com.example.rssparser.ui.activities.MainActivitySubcomponent
 import dagger.Component
 import javax.inject.Singleton
 
