@@ -27,9 +27,9 @@ class NewsListPresenter @Inject constructor(private val newsLoader: NewsListLoad
         loadDisposable?.dispose()
         loadDisposable = newsLoader.getNewList()
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe { viewState.onStartLoading() }
+            .doOnSubscribe { viewState.showRefreshing(true) }
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { viewState.onFinishLoading() }
+            .doAfterTerminate { viewState.showRefreshing(false) }
             .subscribe({ t ->
                 viewState.updateView(t)
             }, { e ->

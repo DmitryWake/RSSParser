@@ -9,9 +9,7 @@ import moxy.viewstate.strategy.StateStrategyType
 interface NewsListView : MvpView {
     fun showError(message: String)
 
-    fun onStartLoading()
-
-    fun onFinishLoading()
+    fun showRefreshing(isRefresh: Boolean)
 
     fun updateView(newsList: List<NewsModel>)
 }

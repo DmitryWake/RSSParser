@@ -113,12 +113,8 @@ class NewsListFragment : MvpAppCompatFragment(), NewsListView {
         Log.e(TAG, message)
     }
 
-    override fun onStartLoading() {
-        fragment_newslist_swipe_refresh_layout.isRefreshing = true
-    }
-
-    override fun onFinishLoading() {
-        fragment_newslist_swipe_refresh_layout.isRefreshing = false
+    override fun showRefreshing(isRefresh: Boolean) {
+        fragment_newslist_swipe_refresh_layout.isRefreshing = isRefresh
     }
 
     override fun updateView(newsList: List<NewsModel>) {
